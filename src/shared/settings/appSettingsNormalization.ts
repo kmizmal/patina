@@ -188,6 +188,10 @@ export function normalizeSettingsRecord(
       record.title_recording_enabled,
       DEFAULT_SETTINGS.titleRecordingEnabled,
     ),
+    keyboardActivityEnabled: parseBooleanSetting(
+      record.keyboard_activity_enabled,
+      DEFAULT_SETTINGS.keyboardActivityEnabled,
+    ),
     showTrayIcon: parseBooleanSetting(record.show_tray_icon, DEFAULT_SETTINGS.showTrayIcon),
     closeBehavior: normalizeCloseBehavior(record.close_behavior),
     themeMode: normalizeThemeMode(record.theme_mode),

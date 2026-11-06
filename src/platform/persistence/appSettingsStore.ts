@@ -29,6 +29,7 @@ type RawAppSettingsKey =
   | "min_session_secs"
   | "tracking_paused"
   | "title_recording_enabled"
+  | "keyboard_activity_enabled"
   | "show_tray_icon"
   | "close_behavior"
   | "theme_mode"
@@ -55,6 +56,7 @@ const APP_SETTINGS_RAW_KEYS: Record<keyof AppSettings, RawAppSettingsKey> = {
   minSessionSecs: "min_session_secs",
   trackingPaused: "tracking_paused",
   titleRecordingEnabled: "title_recording_enabled",
+  keyboardActivityEnabled: "keyboard_activity_enabled",
   showTrayIcon: "show_tray_icon",
   closeBehavior: "close_behavior",
   themeMode: "theme_mode",

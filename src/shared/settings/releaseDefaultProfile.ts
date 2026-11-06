@@ -7,6 +7,7 @@ interface ReleaseDefaultSettingsProfile {
   minSessionSecs: number;
   trackingPaused: boolean;
   titleRecordingEnabled: boolean;
+  keyboardActivityEnabled: boolean;
   showTrayIcon: boolean;
   closeBehavior: "exit" | "tray";
   themeMode: "light" | "dark" | "system";
@@ -77,6 +78,9 @@ export const RELEASE_DEFAULT_SETTINGS: ReleaseDefaultSettingsProfile = {
   minSessionSecs: 300,
   trackingPaused: false,
   titleRecordingEnabled: true,
+  // Keyboard identity capture is opt-in: it records which keys were pressed,
+  // which is a different privacy class from foreground-window tracking.
+  keyboardActivityEnabled: false,
   showTrayIcon: true,
   closeBehavior: "tray",
   themeMode: "light",

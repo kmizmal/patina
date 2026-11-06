@@ -42,6 +42,7 @@ export interface AppSettings {
   minSessionSecs: number;
   trackingPaused: boolean;
   titleRecordingEnabled: boolean;
+  keyboardActivityEnabled: boolean;
   showTrayIcon: boolean;
   closeBehavior: CloseBehavior;
   themeMode: ThemeMode;

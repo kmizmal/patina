@@ -207,6 +207,7 @@ fn is_allowed_app_setting_key(key: &str) -> bool {
             | "min_session_secs"
             | "tracking_paused"
             | "title_recording_enabled"
+            | "keyboard_activity_enabled"
             | "show_tray_icon"
             | "close_behavior"
             | "theme_mode"

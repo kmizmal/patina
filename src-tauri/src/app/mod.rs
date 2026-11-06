@@ -3,6 +3,7 @@ pub mod bootstrap;
 pub mod classification;
 pub mod desktop_behavior;
 pub mod import;
+pub mod keyboard_activity;
 pub mod main_window;
 pub mod mini_window;
 pub mod remote_status_bridge;

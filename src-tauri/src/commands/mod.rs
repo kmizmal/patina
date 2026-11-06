@@ -4,6 +4,7 @@ pub mod diagnostics;
 pub mod error;
 pub mod export;
 pub mod import;
+pub mod keyboard_activity;
 pub mod mini_window;
 pub mod persistence;
 pub mod persistence_read;

@@ -135,6 +135,8 @@ fn register_invoke_handlers(builder: tauri::Builder<tauri::Wry>) -> tauri::Build
         commands::mini_window::cmd_open_mini_window,
         commands::mini_window::cmd_get_mini_window_snapshot,
         commands::mini_window::cmd_mini_window_action,
+        commands::keyboard_activity::cmd_get_keyboard_activity_snapshot,
+        commands::keyboard_activity::cmd_clear_keyboard_activity,
         commands::persistence_read::cmd_get_setting_rows,
         commands::persistence_read::cmd_get_history_range_rows,
         commands::persistence_read::cmd_get_executable_icon_rows,

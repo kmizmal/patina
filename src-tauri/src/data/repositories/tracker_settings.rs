@@ -8,6 +8,7 @@ pub const TRACKER_LAST_STARTUP_SELF_HEAL_SUMMARY_KEY: &str =
 
 const TRACKING_PAUSED_KEY: &str = "tracking_paused";
 pub const TITLE_RECORDING_ENABLED_KEY: &str = "title_recording_enabled";
+pub const KEYBOARD_ACTIVITY_ENABLED_KEY: &str = "keyboard_activity_enabled";
 const TIMELINE_MERGE_GAP_KEY: &str = "timeline_merge_gap_secs";
 const IDLE_TIMEOUT_KEY: &str = "idle_timeout_secs";
 pub const APP_OVERRIDE_KEY_PREFIX: &str = "__app_override::";
@@ -37,6 +38,14 @@ pub async fn load_title_recording_enabled(pool: &Pool<Sqlite>) -> Result<bool, s
         .as_deref()
         .map(|raw| parse_boolean_setting(raw, true))
         .unwrap_or(true))
+}
+
+pub async fn load_keyboard_activity_enabled(pool: &Pool<Sqlite>) -> Result<bool, sqlx::Error> {
+    let value = load_setting_value(pool, KEYBOARD_ACTIVITY_ENABLED_KEY).await?;
+    Ok(value
+        .as_deref()
+        .map(|raw| parse_boolean_setting(raw, false))
+        .unwrap_or(false))
 }
 
 pub async fn has_anonymous_web_rules(pool: &Pool<Sqlite>) -> Result<bool, sqlx::Error> {

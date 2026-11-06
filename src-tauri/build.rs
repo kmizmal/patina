@@ -8,6 +8,8 @@ const APP_COMMANDS: &[&str] = &[
     "cmd_open_mini_window",
     "cmd_get_mini_window_snapshot",
     "cmd_mini_window_action",
+    "cmd_get_keyboard_activity_snapshot",
+    "cmd_clear_keyboard_activity",
     "cmd_get_setting_rows",
     "cmd_get_history_range_rows",
     "cmd_get_executable_icon_rows",

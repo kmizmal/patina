@@ -116,6 +116,8 @@ pub async fn cmd_commit_app_settings(
         .map(|value| parse_boolean_setting(value, false));
     let title_recording_setting = last_app_setting_value(&mutations, "title_recording_enabled")
         .map(|value| parse_boolean_setting(value, true));
+    let keyboard_activity_setting = last_app_setting_value(&mutations, "keyboard_activity_enabled")
+        .map(|value| parse_boolean_setting(value, false));
     let language_setting = last_app_setting_value(&mutations, "language").map(str::to_owned);
     let title_state = app.state::<TitleRecordingRuntimeState>();
     let _title_update_guard = if title_recording_setting.is_some() {
@@ -154,6 +156,11 @@ pub async fn cmd_commit_app_settings(
         tray::apply_title_recording_setting_change(&app, enabled)
             .await
             .map_err(|error| CommandErrorDto::new("SETTINGS_APPLY_FAILED", error, false))?;
+    }
+    if let Some(enabled) = keyboard_activity_setting {
+        // Apply immediately rather than waiting for the supervisor's poll, so the
+        // toggle takes effect the moment the user confirms the dialog.
+        crate::app::keyboard_activity::apply_setting_change(enabled);
     }
     if let Some(language) = language_setting {
         tray::apply_language_setting_change(&app, &language)

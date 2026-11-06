@@ -115,6 +115,10 @@ struct SnapshotCounts {
     scheduled_backup_runs: usize,
     scheduled_export_config: usize,
     scheduled_export_runs: usize,
+    #[serde(default)]
+    keyboard_key_minutes: usize,
+    #[serde(default)]
+    keyboard_combo_minutes: usize,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -362,6 +366,20 @@ async fn read_counts(pool: &Pool<Sqlite>) -> Result<SnapshotCounts, String> {
         scheduled_backup_runs: count_table(pool, "scheduled_backup_runs").await?,
         scheduled_export_config: count_table(pool, "scheduled_export_config").await?,
         scheduled_export_runs: count_table(pool, "scheduled_export_runs").await?,
+        keyboard_key_minutes: if crate::data::schema_contracts::has_keyboard_activity_schema(pool)
+            .await?
+        {
+            count_table(pool, "keyboard_key_minutes").await?
+        } else {
+            0
+        },
+        keyboard_combo_minutes: if crate::data::schema_contracts::has_keyboard_activity_schema(pool)
+            .await?
+        {
+            count_table(pool, "keyboard_combo_minutes").await?
+        } else {
+            0
+        },
     })
 }
 

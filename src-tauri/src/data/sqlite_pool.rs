@@ -26,7 +26,7 @@ pub(crate) async fn register_sqlite_pool(state: &AppSqlitePool, pool: Pool<Sqlit
         previous.close().await;
     }
 }
-const VALIDATED_SCHEMA_MIGRATION_HEAD: i64 = schema::FOCUS_HISTORY_VERSION;
+const VALIDATED_SCHEMA_MIGRATION_HEAD: i64 = schema::KEYBOARD_ACTIVITY_VERSION;
 mod activity_read_model_schema;
 pub(super) mod import_schema;
 mod maintenance;
@@ -250,6 +250,8 @@ async fn table_has_columns(
         "app_catalog_dirty_keys" => "PRAGMA table_info(app_catalog_dirty_keys)",
         "recorded_app_catalog" => "PRAGMA table_info(recorded_app_catalog)",
         "activity_hourly_effective" => "PRAGMA table_info(activity_hourly_effective)",
+        "keyboard_key_minutes" => "PRAGMA table_info(keyboard_key_minutes)",
+        "keyboard_combo_minutes" => "PRAGMA table_info(keyboard_combo_minutes)",
         _ => {
             return Err(format!(
                 "unsupported schema inspection table `{table_name}`"
@@ -295,6 +297,8 @@ async fn table_has_index(
         "app_catalog_dirty_keys" => "PRAGMA index_list(app_catalog_dirty_keys)",
         "recorded_app_catalog" => "PRAGMA index_list(recorded_app_catalog)",
         "activity_hourly_effective" => "PRAGMA index_list(activity_hourly_effective)",
+        "keyboard_key_minutes" => "PRAGMA index_list(keyboard_key_minutes)",
+        "keyboard_combo_minutes" => "PRAGMA index_list(keyboard_combo_minutes)",
         _ => return Err(format!("unsupported index inspection table `{table_name}`")),
     };
 
@@ -784,6 +788,7 @@ async fn has_current_schema(pool: &Pool<Sqlite>) -> Result<bool, String> {
         schema_contracts::has_web_activity_revision_schema(pool).await?,
         schema_contracts::has_scheduled_backup_schema(pool).await?,
         schema_contracts::has_scheduled_export_schema(pool).await?,
+        schema_contracts::has_keyboard_activity_schema(pool).await?,
     ];
     Ok(checks.into_iter().all(|ready| ready))
 }

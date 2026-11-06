@@ -6,6 +6,7 @@ pub mod classification;
 pub mod export_schedule;
 pub mod focus_history;
 pub mod free_focus;
+pub mod keyboard_activity;
 pub mod lifecycle;
 pub mod localization;
 pub mod mini_window;

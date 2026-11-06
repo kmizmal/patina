@@ -6,6 +6,7 @@ pub mod classification_service;
 pub mod export;
 pub mod icon_cache_service;
 pub mod import;
+pub mod keyboard_activity_store;
 pub mod mini_window_store;
 pub mod remote_backup;
 pub mod remote_backup_config;

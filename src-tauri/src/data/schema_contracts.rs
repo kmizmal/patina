@@ -179,6 +179,17 @@ pub async fn has_web_activity_revision_schema(pool: &Pool<Sqlite>) -> Result<boo
         .all(|required| columns.iter().any(|column| column == required)))
 }
 
+pub async fn has_keyboard_activity_schema(pool: &Pool<Sqlite>) -> Result<bool, String> {
+    let keys = table_columns(pool, "keyboard_key_minutes").await?;
+    let combos = table_columns(pool, "keyboard_combo_minutes").await?;
+    Ok(["bucket_start_ms", "key_name", "key_code", "press_count"]
+        .iter()
+        .all(|c| keys.contains(*c))
+        && ["bucket_start_ms", "combo_key", "press_count"]
+            .iter()
+            .all(|c| combos.contains(*c)))
+}
+
 async fn table_columns(pool: &Pool<Sqlite>, table: &str) -> Result<BTreeSet<String>, String> {
     let rows = sqlx::query(&format!("PRAGMA table_info({table})"))
         .fetch_all(pool)

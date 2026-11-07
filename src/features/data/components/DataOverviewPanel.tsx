@@ -50,12 +50,15 @@ interface DataOverviewPanelProps {
     onRetry: () => void;
   };
   keyboardActivityEnabled: boolean;
+  /** Clock the page resolved its trend range with; children must not read their own. */
+  nowMs: number;
 }
 
 function DataOverviewPanel({
   trend,
   heatmap,
   keyboardActivityEnabled,
+  nowMs,
 }: DataOverviewPanelProps) {
   return (
     <div className="qp-panel p-5 data-overview">
@@ -66,7 +69,7 @@ function DataOverviewPanel({
       <DataHeatmapPanel {...heatmap} />
       {keyboardActivityEnabled ? (
         <Suspense fallback={null}>
-          <KeyboardHeatmapSection selection={trend.selection} />
+          <KeyboardHeatmapSection nowMs={nowMs} selection={trend.selection} />
         </Suspense>
       ) : null}
     </div>

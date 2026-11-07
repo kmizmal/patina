@@ -50,6 +50,7 @@ interface AppSettings {
   minSessionSecs: number;
   trackingPaused: boolean;
   titleRecordingEnabled: boolean;
+  keyboardActivityEnabled: boolean;
   showTrayIcon: boolean;
   closeBehavior: "exit" | "tray";
   themeMode: "light" | "dark" | "system";
@@ -135,6 +136,7 @@ const BASE_SETTINGS: AppSettings = {
   minSessionSecs: 60,
   trackingPaused: false,
   titleRecordingEnabled: true,
+  keyboardActivityEnabled: false,
   showTrayIcon: true,
   closeBehavior: "tray",
   themeMode: "light",

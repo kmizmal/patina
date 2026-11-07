@@ -1082,6 +1082,7 @@ export default function Data({
               onRetry: overviewHeatmap.retry,
             }}
             keyboardActivityEnabled={keyboardActivityEnabled}
+            nowMs={nowMs}
           />
 
           <DataAppTrendPanel

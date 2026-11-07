@@ -4,28 +4,15 @@ import {
   buildKeyboardHeatmapViewModel,
   type KeyboardHeatmapViewModel,
 } from "../services/keyboardHeatmapReadModel.ts";
+import {
+  buildKeyboardHeatmapQueryKey,
+  type KeyboardHeatmapRange,
+} from "../services/keyboardHeatmapRange.ts";
 
 interface KeyboardReadState {
   queryKey: string;
   snapshot: KeyboardHeatmapViewModel | null;
   status: "loading" | "ready" | "disabled" | "error";
-}
-
-/**
- * Keyboard buckets are written at most once a minute, so a read pinned to the
- * current minute would refetch constantly for one extra press. The query key
- * therefore rounds to the hour: the panel refreshes when the hour turns, when
- * the user changes the range, or when they retry by hand.
- */
-const HOUR_MS = 60 * 60 * 1000;
-
-function hourKey(nowMs: number): number {
-  return Math.floor(nowMs / HOUR_MS);
-}
-
-export interface KeyboardHeatmapRange {
-  startMs: number;
-  endMs: number;
 }
 
 export function useKeyboardHeatmapSnapshot(
@@ -35,10 +22,15 @@ export function useKeyboardHeatmapSnapshot(
 ) {
   const [retryKey, setRetryKey] = useState(0);
   const retry = useCallback(() => setRetryKey((value) => value + 1), []);
-  const queryKey =
-    range === null || !enabled
-      ? "off"
-      : `${hourKey(Date.now())}:${range.startMs}:${range.endMs}:${layout}:${retryKey}`;
+  // The key comes only from the resolved range, so it is stable for as long as
+  // the caller's range is. See `buildKeyboardHeatmapQueryKey` for why a
+  // wall-clock term must not appear here.
+  const queryKey = buildKeyboardHeatmapQueryKey(range, layout, retryKey, enabled);
+  // Primitive bounds rather than the range object: callers may pass a fresh
+  // literal on every render, which would restart the effect each time even
+  // though the window itself had not moved.
+  const rangeStartMs = range?.startMs ?? null;
+  const rangeEndMs = range?.endMs ?? null;
   const [state, setState] = useState<KeyboardReadState>(() => ({
     queryKey: "off",
     snapshot: null,
@@ -46,7 +38,7 @@ export function useKeyboardHeatmapSnapshot(
   }));
 
   useEffect(() => {
-    if (range === null || !enabled) {
+    if (rangeStartMs === null || rangeEndMs === null || !enabled) {
       setState({ queryKey: "off", snapshot: null, status: "disabled" });
       return;
     }
@@ -58,7 +50,7 @@ export function useKeyboardHeatmapSnapshot(
     }));
     const load = async () => {
       try {
-        const snapshot = await readKeyboardActivitySnapshot(range.startMs, range.endMs);
+        const snapshot = await readKeyboardActivitySnapshot(rangeStartMs, rangeEndMs);
         if (cancelled) return;
         setState({
           queryKey,
@@ -75,7 +67,7 @@ export function useKeyboardHeatmapSnapshot(
     return () => {
       cancelled = true;
     };
-  }, [enabled, layout, queryKey, range?.endMs, range?.startMs]);
+  }, [enabled, layout, queryKey, rangeEndMs, rangeStartMs]);
 
   const matchesQuery = state.queryKey === queryKey;
   return {

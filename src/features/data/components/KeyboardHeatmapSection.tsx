@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useLocaleText } from "../../../shared/i18n/index.ts";
 import { useKeyboardHeatmapSnapshot } from "../hooks/useKeyboardHeatmapSnapshot.ts";
 import type { KeyboardLayoutId } from "../services/keyboardLayout.ts";
-import { resolveDataTrendRange } from "../services/dataTrendRange.ts";
 import type { DataTrendRangeSelection } from "../services/dataTrendRange.ts";
+import { resolveKeyboardHeatmapQuery } from "../services/keyboardHeatmapRange.ts";
 import KeyboardHeatmapPanel from "./KeyboardHeatmapPanel.tsx";
 
 /**
@@ -15,18 +15,29 @@ import KeyboardHeatmapPanel from "./KeyboardHeatmapPanel.tsx";
  */
 interface KeyboardHeatmapSectionProps {
   selection: DataTrendRangeSelection;
+  /** Clock owned by the data page; it moves only when that page refreshes. */
+  nowMs: number;
 }
 
 const DEFAULT_KEYBOARD_LAYOUT: KeyboardLayoutId = "Full";
 
 export default function KeyboardHeatmapSection({
+  nowMs,
   selection,
 }: KeyboardHeatmapSectionProps) {
   const UI_TEXT = useLocaleText();
   const [layout, setLayout] = useState<KeyboardLayoutId>(DEFAULT_KEYBOARD_LAYOUT);
-  const range = resolveDataTrendRange(selection, Date.now(), UI_TEXT);
+  // The range must be memoized against a clock the page owns. Resolving it from
+  // `Date.now()` during render rebuilt `endMs` (it is clamped to "now") on every
+  // render, so the read hook saw a new range each time, refetched, stored the
+  // result, re-rendered, and looped until React threw "Maximum update depth
+  // exceeded" — the panel never left its loading state.
+  const { range } = useMemo(
+    () => resolveKeyboardHeatmapQuery(selection, nowMs, UI_TEXT),
+    [nowMs, selection, UI_TEXT],
+  );
   const { viewModel, loading, disabled, error, retry } = useKeyboardHeatmapSnapshot(
-    { startMs: range.startMs, endMs: range.endMs },
+    range,
     true,
     layout,
   );

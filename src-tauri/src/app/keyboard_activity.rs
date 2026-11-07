@@ -35,6 +35,10 @@ const SETTING_POLL_INTERVAL: Duration = Duration::from_secs(15);
 /// Guards against stacked supervisors if the restart path ever runs twice.
 static LOOP_SPAWNED: AtomicBool = AtomicBool::new(false);
 
+/// One-shot wake channel so a settings change is applied without waiting for the
+/// next flush tick.
+static WAKE: std::sync::OnceLock<tokio::sync::Notify> = std::sync::OnceLock::new();
+
 /// Starts the capture supervisor for this process.
 ///
 /// Safe to call more than once: only the first call spawns the loop.
@@ -49,13 +53,16 @@ pub(crate) fn spawn_supervisor<R: Runtime + 'static>(app: AppHandle<R>) {
 
 async fn run_supervisor<R: Runtime + 'static>(app: AppHandle<R>) {
     let mut capturing = false;
-    let mut ticks_since_setting_poll = 0u32;
-    // Poll the setting on the first tick so capture follows the stored state
-    // immediately at launch instead of waiting a full interval.
-    let poll_ticks = (SETTING_POLL_INTERVAL.as_secs() / FLUSH_INTERVAL.as_secs()).max(1) as u32;
+    // Flushing runs on the bucket cadence; the setting is re-read on a coarser
+    // one. Counting flush ticks would never reach the poll interval because the
+    // flush is the longer of the two, so the poll gets its own tick counter.
+    let poll_ticks_between_flushes =
+        (FLUSH_INTERVAL.as_secs() / SETTING_POLL_INTERVAL.as_secs()).max(1) as u32;
+    let mut ticks_since_setting_poll = poll_ticks_between_flushes;
 
     loop {
-        if ticks_since_setting_poll == 0 {
+        if ticks_since_setting_poll >= poll_ticks_between_flushes {
+            ticks_since_setting_poll = 0;
             match keyboard_activity_store::load_enabled(&app).await {
                 Ok(Some(enabled)) => capturing = apply_capture_state(enabled, capturing),
                 // Pool unavailable right now: keep the current state rather than
@@ -65,29 +72,51 @@ async fn run_supervisor<R: Runtime + 'static>(app: AppHandle<R>) {
             }
         }
         ticks_since_setting_poll += 1;
-        if ticks_since_setting_poll >= poll_ticks {
-            ticks_since_setting_poll = 0;
-        }
 
         // Flush regardless of the current capture state: whatever closed before
         // the user turned capture off is still real recorded data.
         flush_closed_bucket(&app).await;
 
-        sleep(FLUSH_INTERVAL).await;
+        // Sleep until the next bucket boundary, but let a settings change wake
+        // the loop early so the toggle takes effect immediately.
+        let sleep_deadline = tokio::time::Instant::now() + FLUSH_INTERVAL;
+        tokio::select! {
+            _ = tokio::time::sleep_until(sleep_deadline) => {}
+            _ = wake().notified() => {}
+        }
     }
+}
+
+fn wake() -> &'static tokio::sync::Notify {
+    WAKE.get_or_init(tokio::sync::Notify::new)
 }
 
 /// Applies the desired capture state, returning the resulting state.
 fn apply_capture_state(enabled: bool, capturing: bool) -> bool {
     if enabled {
+        if capturing {
+            return true;
+        }
         match keyboard_capture::start() {
-            keyboard_capture::CaptureStart::Started => true,
+            keyboard_capture::CaptureStart::Started => {
+                eprintln!("[keyboard] capture started");
+                true
+            }
             // Already running from an earlier start that lost track of state.
-            keyboard_capture::CaptureStart::AlreadyRunning => true,
-            keyboard_capture::CaptureStart::Unavailable => false,
+            keyboard_capture::CaptureStart::AlreadyRunning => {
+                eprintln!("[keyboard] capture was already running");
+                true
+            }
+            // Raw input registration failed. The feature is on but nothing is
+            // being recorded, so this must be loud rather than a silent gap.
+            keyboard_capture::CaptureStart::Unavailable => {
+                eprintln!("[keyboard] capture unavailable: raw input registration failed");
+                false
+            }
         }
     } else if capturing {
         keyboard_capture::stop();
+        eprintln!("[keyboard] capture stopped");
         false
     } else {
         false
@@ -132,10 +161,15 @@ async fn flush_closed_bucket<R: Runtime>(app: &AppHandle<R>) {
 /// instead of waiting for the next poll. Called by the settings command after
 /// the settings commit succeeds.
 pub(crate) fn apply_setting_change(enabled: bool) {
-    let _ = apply_capture_state(enabled, keyboard_capture::is_running());
+    let capturing = apply_capture_state(enabled, keyboard_capture::is_running());
     if !enabled {
         // Turning capture off discards the in-progress bucket. Writing it would
         // mean persisting keystrokes recorded after the user asked us to stop.
         keyboard_capture::discard_open_bucket();
+    } else if capturing {
+        // A fresh capture starts its own minute; anything already buffered
+        // belongs to the previous on-period and should be persisted now rather
+        // than merged into the new one.
+        wake().notify_waiters();
     }
 }

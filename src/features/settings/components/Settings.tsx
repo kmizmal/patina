@@ -6,6 +6,7 @@ import type { SettingsPageProps } from "../types";
 import type { AppLanguage } from "../../../shared/settings/appSettings.ts";
 import QuietPageHeader from "../../../shared/components/QuietPageHeader";
 import QuietButton from "../../../shared/components/QuietButton";
+import QuietConfirmDialog from "../../../shared/components/QuietConfirmDialog.tsx";
 import SettingsAppearancePanel from "./SettingsAppearancePanel";
 import SettingsDataSafetyPanel from "./SettingsDataSafetyPanel";
 import SettingsInterfacePanel from "./SettingsInterfacePanel";
@@ -36,6 +37,7 @@ export default function Settings({
   const [languageSelectionPending, setLanguageSelectionPending] = useState(false);
   const languageSelectionPendingRef = useRef(false);
   const languageSelectionRevisionRef = useRef(0);
+  const [keyboardConfirmOpen, setKeyboardConfirmOpen] = useState(false);
   const registerSaveHandler = useCallback((handler: (() => Promise<boolean>) | null) => {
     onRegisterSaveHandler?.(handler
       ? async () => languageSelectionPendingRef.current ? false : handler()
@@ -93,6 +95,13 @@ export default function Settings({
     onToast,
     onRegisterSaveHandler: registerSaveHandler,
   });
+  // Turning recording on asks first because the answer is never only "yes":
+  // the totals reach backups and database exports, and that has to be said out
+  // loud before any of it exists. Turning it off is immediate.
+  const requestKeyboardActivityChange = useCallback((nextChecked: boolean) => {
+    if (nextChecked) setKeyboardConfirmOpen(true);
+    else handleChange("keyboardActivityEnabled", false);
+  }, [handleChange]);
   const { showWebActivityHelp } = useWebActivitySetupState({
     savedSettings,
     draftSettings,
@@ -235,6 +244,8 @@ export default function Settings({
             onTrackingPausedChange={(nextChecked) => handleChange("trackingPaused", nextChecked)}
             titleRecordingEnabled={draftSettings.titleRecordingEnabled}
             onTitleRecordingEnabledChange={(nextChecked) => handleChange("titleRecordingEnabled", nextChecked)}
+            keyboardActivityEnabled={draftSettings.keyboardActivityEnabled}
+            onKeyboardActivityEnabledChange={requestKeyboardActivityChange}
           />
 
           <SettingsAppearancePanel
@@ -344,6 +355,18 @@ export default function Settings({
           />
         </Suspense>
       ) : null}
+      <QuietConfirmDialog
+        open={keyboardConfirmOpen}
+        title={UI_TEXT.settings.keyboardConfirmTitle}
+        description={UI_TEXT.settings.keyboardConfirmBody}
+        confirmLabel={UI_TEXT.common.confirm}
+        cancelLabel={UI_TEXT.common.cancel}
+        onCancel={() => setKeyboardConfirmOpen(false)}
+        onConfirm={() => {
+          setKeyboardConfirmOpen(false);
+          handleChange("keyboardActivityEnabled", true);
+        }}
+      />
     </div>
   );
 }

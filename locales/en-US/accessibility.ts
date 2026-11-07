@@ -121,6 +121,7 @@ export const MESSAGES = {
   "accessibility.settings.showServiceToken": "Show token",
   "accessibility.settings.toggleCloseToTray": "Toggle hide on close",
   "accessibility.settings.toggleGlobalTitle": "Toggle global titles",
+  "accessibility.settings.toggleKeyboardActivity": "Toggle keyboard activity recording",
   "accessibility.settings.toggleLaunchAtLogin": "Toggle launch at login",
   "accessibility.settings.toggleRemoteStatusBridge": "Toggle remote push",
   "accessibility.settings.toggleStartMinimized": "Toggle silent launch",

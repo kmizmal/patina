@@ -23,6 +23,8 @@ type SettingsTrackingPanelProps = {
   onTrackingPausedChange: (nextChecked: boolean) => void;
   titleRecordingEnabled: boolean;
   onTitleRecordingEnabledChange: (nextChecked: boolean) => void;
+  keyboardActivityEnabled: boolean;
+  onKeyboardActivityEnabledChange: (nextChecked: boolean) => void;
 };
 
 type MinuteStepperSliderProps = {
@@ -86,6 +88,8 @@ export default function SettingsTrackingPanel({
   onTrackingPausedChange,
   titleRecordingEnabled,
   onTitleRecordingEnabledChange,
+  keyboardActivityEnabled,
+  onKeyboardActivityEnabledChange,
 }: SettingsTrackingPanelProps) {
   const UI_TEXT = useLocaleText();
   return (
@@ -116,6 +120,18 @@ export default function SettingsTrackingPanel({
                 checked={titleRecordingEnabled}
                 onChange={onTitleRecordingEnabledChange}
                 ariaLabel={UI_TEXT.accessibility.settings.toggleGlobalTitle}
+              />
+            </SettingsPreferenceRow>
+          </QuietActionRow>
+          <QuietActionRow className="settings-preference-list">
+            <SettingsPreferenceRow
+              title={UI_TEXT.settings.keyboardLabel}
+              hint={UI_TEXT.settings.keyboardHint}
+            >
+              <QuietSwitch
+                checked={keyboardActivityEnabled}
+                onChange={onKeyboardActivityEnabledChange}
+                ariaLabel={UI_TEXT.accessibility.settings.toggleKeyboardActivity}
               />
             </SettingsPreferenceRow>
           </QuietActionRow>

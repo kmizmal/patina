@@ -470,6 +470,11 @@ export const MESSAGE_SCHEMA = {
     "params": [],
     "surface": "frontend"
   },
+  "accessibility.settings.toggleKeyboardActivity": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
   "accessibility.settings.toggleGlobalTitle": {
     "kind": "string",
     "params": [],
@@ -3953,6 +3958,31 @@ export const MESSAGE_SCHEMA = {
     "surface": "frontend"
   },
   "settings.dynamicEffectsLabel": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "settings.keyboardLabel": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "settings.keyboardHint": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "settings.keyboardConfirmTitle": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "settings.keyboardConfirmBody": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "settings.keyboardDataClear": {
     "kind": "string",
     "params": [],
     "surface": "frontend"

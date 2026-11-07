@@ -116,6 +116,7 @@ export interface UiText {
       "showServiceToken": string;
       "toggleCloseToTray": string;
       "toggleGlobalTitle": string;
+      "toggleKeyboardActivity": string;
       "toggleLaunchAtLogin": string;
       "toggleRemoteStatusBridge": string;
       "toggleShowTrayIcon": string;
@@ -803,6 +804,11 @@ export interface UiText {
     "increaseCleanupRange": string;
     "increaseMinute": (label: string) => string;
     "interfaceGroupTitle": string;
+    "keyboardConfirmBody": string;
+    "keyboardConfirmTitle": string;
+    "keyboardDataClear": string;
+    "keyboardHint": string;
+    "keyboardLabel": string;
     "languageLabel": string;
     "languageLoadFailed": string;
     "languageOptions": {

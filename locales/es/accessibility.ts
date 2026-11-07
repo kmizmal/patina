@@ -121,6 +121,7 @@ export const MESSAGES = {
   "accessibility.settings.showServiceToken": "Mostrar Token",
   "accessibility.settings.toggleCloseToTray": "Activar o desactivar ocultar al cerrar",
   "accessibility.settings.toggleGlobalTitle": "Activar o desactivar el registro global de títulos",
+  "accessibility.settings.toggleKeyboardActivity": "Alternar el registro de actividad del teclado",
   "accessibility.settings.toggleLaunchAtLogin": "Activar o desactivar el inicio de la aplicación con Windows",
   "accessibility.settings.toggleRemoteStatusBridge": "Activar o desactivar el envío remoto",
   "accessibility.settings.toggleStartMinimized": "Activar o desactivar el inicio en segundo plano",

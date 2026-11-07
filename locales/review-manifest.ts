@@ -1042,7 +1042,13 @@ export const LOCALE_SOURCE_REVIEWS = {
     "data.keyboardRegions.editing": "a0a289250fcac899",
     "data.keyboardRegions.function": "d0587758d388a2cd",
     "data.keyboardRegions.navigation": "49f5ee4e608ebd8f",
-    "data.keyboardRegions.numpad": "ef2299f156df7d2b"
+    "data.keyboardRegions.numpad": "ef2299f156df7d2b",
+    "settings.keyboardLabel": "d0fa33a2a43ef1fc",
+    "settings.keyboardHint": "be4ccad8bc5d6f2c",
+    "settings.keyboardConfirmTitle": "8dc59384c2fa87d0",
+    "settings.keyboardConfirmBody": "962f7002556e29e7",
+    "settings.keyboardDataClear": "2857c5d7e7d471a5",
+    "accessibility.settings.toggleKeyboardActivity": "9ee55c275079d4b0"
   },
   "es": {
     "about.description": "9e6291ff14b79ed3",
@@ -2086,7 +2092,13 @@ export const LOCALE_SOURCE_REVIEWS = {
     "data.keyboardRegions.editing": "a0a289250fcac899",
     "data.keyboardRegions.function": "d0587758d388a2cd",
     "data.keyboardRegions.navigation": "49f5ee4e608ebd8f",
-    "data.keyboardRegions.numpad": "ef2299f156df7d2b"
+    "data.keyboardRegions.numpad": "ef2299f156df7d2b",
+    "settings.keyboardLabel": "d0fa33a2a43ef1fc",
+    "settings.keyboardHint": "be4ccad8bc5d6f2c",
+    "settings.keyboardConfirmTitle": "8dc59384c2fa87d0",
+    "settings.keyboardConfirmBody": "962f7002556e29e7",
+    "settings.keyboardDataClear": "2857c5d7e7d471a5",
+    "accessibility.settings.toggleKeyboardActivity": "9ee55c275079d4b0"
   },
   "ru-RU": {
     "about.description": "9e6291ff14b79ed3",
@@ -3130,6 +3142,12 @@ export const LOCALE_SOURCE_REVIEWS = {
     "data.keyboardRegions.editing": "a0a289250fcac899",
     "data.keyboardRegions.function": "d0587758d388a2cd",
     "data.keyboardRegions.navigation": "49f5ee4e608ebd8f",
-    "data.keyboardRegions.numpad": "ef2299f156df7d2b"
+    "data.keyboardRegions.numpad": "ef2299f156df7d2b",
+    "settings.keyboardLabel": "d0fa33a2a43ef1fc",
+    "settings.keyboardHint": "be4ccad8bc5d6f2c",
+    "settings.keyboardConfirmTitle": "8dc59384c2fa87d0",
+    "settings.keyboardConfirmBody": "962f7002556e29e7",
+    "settings.keyboardDataClear": "2857c5d7e7d471a5",
+    "accessibility.settings.toggleKeyboardActivity": "9ee55c275079d4b0"
   }
 } as const;

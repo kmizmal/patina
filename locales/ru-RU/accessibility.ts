@@ -121,6 +121,7 @@ export const MESSAGES = {
   "accessibility.settings.showServiceToken": "Показать токен",
   "accessibility.settings.toggleCloseToTray": "Переключить скрытие при закрытии",
   "accessibility.settings.toggleGlobalTitle": "Переключить глобальную запись заголовков",
+  "accessibility.settings.toggleKeyboardActivity": "Переключить запись активности клавиатуры",
   "accessibility.settings.toggleLaunchAtLogin": "Переключить запуск приложения при входе в Windows",
   "accessibility.settings.toggleRemoteStatusBridge": "Переключить удалённую отправку статуса",
   "accessibility.settings.toggleStartMinimized": "Переключить запуск в фоне",

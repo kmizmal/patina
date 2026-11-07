@@ -121,6 +121,7 @@ export const MESSAGES = {
   "accessibility.settings.showServiceToken": "显示 Token",
   "accessibility.settings.toggleCloseToTray": "切换关闭到后台",
   "accessibility.settings.toggleGlobalTitle": "切换全局标题",
+  "accessibility.settings.toggleKeyboardActivity": "开关键盘活动记录",
   "accessibility.settings.toggleLaunchAtLogin": "切换开机自启动",
   "accessibility.settings.toggleRemoteStatusBridge": "切换远程推送",
   "accessibility.settings.toggleStartMinimized": "切换静默启动",

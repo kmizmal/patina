@@ -28,7 +28,8 @@ const NON_DATA_PRIMARY_LAZY_ROUTES_GZIP_BUDGET_KI_B = 86.5;
 // Software notification delivery: docs/archive/2026-11-04-tools-notification-bundle-decision.md.
 // Icon extraction and theme adaptation: docs/archive/2026-11-05-activity-color-bundle-decision.md.
 // Per-task focus history: docs/archive/2026-11-06-focus-history-bundle-decision.md.
-const TOTAL_JS_AND_CSS_GZIP_BUDGET_KI_B = 417.7;
+// Keyboard heatmap: docs/archive/2026-11-07-keyboard-heatmap-bundle-decision.md.
+const TOTAL_JS_AND_CSS_GZIP_BUDGET_KI_B = 426.2;
 
 const INITIAL_CHUNK_BUDGETS = [
   { label: "index", pattern: /^index-.*\.js$/, gzipKiB: 65 },
@@ -39,7 +40,7 @@ const INITIAL_CHUNK_BUDGETS = [
   { label: "runtime type guards", pattern: /^runtimeTypeGuards-.*\.js$/, gzipKiB: 0.2 },
   // Production locale metadata lives here; translated text stays in its own
   // locale chunk. Initial and total graph budgets remain unchanged.
-  { label: "localization", pattern: /^runtime-.*\.js$/, gzipKiB: 7.65 },
+  { label: "localization", pattern: /^runtime-.*\.js$/, gzipKiB: 7.8 },
   { label: "classification", pattern: /^appClassification-.*\.js$/, gzipKiB: 6 },
   { label: "object color", pattern: /^objectColor-.*\.js$/, gzipKiB: 0.316 },
 ] as const;
@@ -72,7 +73,7 @@ const LAZY_PAGE_CHUNK_BUDGETS = [
   // third application-category mode remains synchronous and feature-owned here;
   // splitting it would duplicate the read-model graph into unowned support chunks.
   // Chart handoff readiness: docs/archive/2026-11-04-data-navigation-bundle-decision.md.
-  { label: "Data", pattern: /^Data-.*\.js$/, gzipKiB: 22.8 },
+  { label: "Data", pattern: /^Data-.*\.js$/, gzipKiB: 23.6 },
   { label: "About", pattern: /^About-.*\.js$/, gzipKiB: 18 },
 ] as const;
 

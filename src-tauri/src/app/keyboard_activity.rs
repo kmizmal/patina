@@ -19,7 +19,7 @@
 
 use std::sync::atomic::{AtomicBool, Ordering};
 use tauri::{AppHandle, Runtime};
-use tokio::time::{sleep, Duration};
+use tokio::time::Duration;
 
 use crate::data::keyboard_activity_store;
 use crate::domain::keyboard_activity::{KeyboardComboMinute, KeyboardKeyMinute};

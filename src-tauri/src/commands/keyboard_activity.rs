@@ -21,7 +21,9 @@ pub async fn cmd_get_keyboard_activity_snapshot<R: Runtime>(
         .map_err(|error| CommandErrorDto::new("SQLITE_UNAVAILABLE", error, true))?;
     keyboard_activity::load_snapshot(&pool, range_start_ms, range_end_ms)
         .await
-        .map_err(|error| SqliteOperationError::from_sqlx("reading keyboard activity", error).into())
+        .map_err(|error| {
+            SqliteOperationError::operation_failed("reading keyboard activity", error).into()
+        })
 }
 
 /// Deletes every recorded keyboard bucket without touching any other tracked
@@ -36,6 +38,6 @@ pub async fn cmd_clear_keyboard_activity<R: Runtime>(
         .await
         .map_err(|error| CommandErrorDto::new("SQLITE_UNAVAILABLE", error, true))?;
     keyboard_activity::clear_all(&pool).await.map_err(|error| {
-        SqliteOperationError::from_sqlx("clearing keyboard activity", error).into()
+        SqliteOperationError::operation_failed("clearing keyboard activity", error).into()
     })
 }

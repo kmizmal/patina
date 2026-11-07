@@ -20,7 +20,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 use std::sync::{Mutex, OnceLock};
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
@@ -198,7 +198,11 @@ pub fn start() -> CaptureStart {
         return CaptureStart::AlreadyRunning;
     }
 
-    let (tx, rx) = std::sync::mpsc::channel::<Option<HWND>>();
+    // HWND wraps a raw pointer and is deliberately not `Send`, so the
+    // ready handshake carries the raw address and rebuilds the handle on
+    // this side. The window outlives the message because the sending thread
+    // keeps it alive until its message loop exits.
+    let (tx, rx) = std::sync::mpsc::channel::<Option<isize>>();
     let handle = thread::Builder::new()
         .name("patina-keyboard-capture".to_string())
         .spawn(move || run_capture_loop(tx));
@@ -210,8 +214,8 @@ pub fn start() -> CaptureStart {
     // Wait for the window to exist so the caller can report a real state. A
     // timeout here means window creation failed; the thread exits on its own.
     match rx.recv_timeout(Duration::from_secs(5)) {
-        Ok(Some(hwnd)) => {
-            guard.hwnd = Some(hwnd);
+        Ok(Some(address)) => {
+            guard.hwnd = Some(HWND(address as *mut core::ffi::c_void));
             guard.thread = Some(handle);
             CaptureStart::Started
         }
@@ -277,7 +281,7 @@ pub fn discard_open_bucket() {
     }
 }
 
-fn run_capture_loop(ready: std::sync::mpsc::Sender<Option<HWND>>) {
+fn run_capture_loop(ready: std::sync::mpsc::Sender<Option<isize>>) {
     unsafe {
         let instance = match GetModuleHandleW(None) {
             Ok(module) => module.into(),
@@ -339,7 +343,7 @@ fn run_capture_loop(ready: std::sync::mpsc::Sender<Option<HWND>>) {
             return;
         }
 
-        let _ = ready.send(Some(hwnd));
+        let _ = ready.send(Some(hwnd.0 as isize));
 
         // Message loop. WM_INPUT is handled inline without blocking so the input
         // queue never backs up; aggregation is a few hash updates.

@@ -40,6 +40,8 @@ export const MESSAGES = {
   "toast.cleanupFailed": "No se pudieron eliminar los registros del historial. Inténtalo más tarde.",
   "toast.cleanupSuccess": "Registros del historial eliminados.",
   "toast.feedbackOpenFailed": "No se pudo abrir el enlace de comentarios.",
+  "toast.keyboardDataClearFailed": "No se pudieron borrar los registros del teclado. Inténtalo más tarde.",
+  "toast.keyboardDataClearSuccess": "Registros del teclado borrados.",
   "toast.releaseNotesOpenFailed": "No se pudieron abrir las notas de la versión.",
   "toast.repositoryOpenFailed": "No se pudo abrir el enlace de GitHub.",
   "toast.settingsRuntimeSyncPartial": "La configuración se ha guardado, pero algunos cambios no se han podido aplicar. Reinicia la aplicación.",

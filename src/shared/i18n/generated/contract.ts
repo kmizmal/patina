@@ -805,6 +805,7 @@ export interface UiText {
     "keyboardConfirmBody": string;
     "keyboardConfirmTitle": string;
     "keyboardDataClear": string;
+    "keyboardDataClearHint": string;
     "keyboardHint": string;
     "keyboardLabel": string;
     "languageLabel": string;
@@ -947,6 +948,8 @@ export interface UiText {
     "cleanupFailed": string;
     "cleanupSuccess": string;
     "feedbackOpenFailed": string;
+    "keyboardDataClearFailed": string;
+    "keyboardDataClearSuccess": string;
     "releaseNotesOpenFailed": string;
     "repositoryOpenFailed": string;
     "settingsRuntimeSyncPartial": string;

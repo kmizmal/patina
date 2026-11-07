@@ -1,7 +1,8 @@
 import { useLocaleText } from "../../../shared/i18n/index.ts";
-import { MousePointerClick } from "lucide-react";
+import { MousePointerClick, RefreshCw, Trash2 } from "lucide-react";
 import QuietSwitch from "../../../shared/components/QuietSwitch";
 import QuietActionRow from "../../../shared/components/QuietActionRow";
+import QuietButton from "../../../shared/components/QuietButton";
 
 import QuietStepperSlider from "../../../shared/components/QuietStepperSlider.tsx";
 import SettingsPanelHeader from "./SettingsPanelHeader";
@@ -25,6 +26,8 @@ type SettingsTrackingPanelProps = {
   onTitleRecordingEnabledChange: (nextChecked: boolean) => void;
   keyboardActivityEnabled: boolean;
   onKeyboardActivityEnabledChange: (nextChecked: boolean) => void;
+  isClearingKeyboard: boolean;
+  onClearKeyboardActivity: () => void;
 };
 
 type MinuteStepperSliderProps = {
@@ -90,6 +93,8 @@ export default function SettingsTrackingPanel({
   onTitleRecordingEnabledChange,
   keyboardActivityEnabled,
   onKeyboardActivityEnabledChange,
+  isClearingKeyboard,
+  onClearKeyboardActivity,
 }: SettingsTrackingPanelProps) {
   const UI_TEXT = useLocaleText();
   return (
@@ -133,6 +138,25 @@ export default function SettingsTrackingPanel({
                 onChange={onKeyboardActivityEnabledChange}
                 ariaLabel={UI_TEXT.accessibility.settings.toggleKeyboardActivity}
               />
+            </SettingsPreferenceRow>
+            {/* Deleting sits next to the switch it belongs to, but it stays
+                available after the switch is off: turning recording off was
+                never a promise that the old totals were gone. */}
+            <SettingsPreferenceRow
+              title={UI_TEXT.settings.keyboardDataClear}
+              hint={UI_TEXT.settings.keyboardDataClearHint}
+            >
+              <QuietButton
+                tone="danger"
+                size="regular"
+                busy={isClearingKeyboard}
+                onClick={onClearKeyboardActivity}
+              >
+                {isClearingKeyboard
+                  ? <RefreshCw size={14} className="animate-spin" />
+                  : <Trash2 size={14} />}
+                {UI_TEXT.settings.keyboardDataClear}
+              </QuietButton>
             </SettingsPreferenceRow>
           </QuietActionRow>
         </SettingsPreferenceGroup>

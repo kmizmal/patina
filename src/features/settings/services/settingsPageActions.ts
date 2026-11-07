@@ -29,6 +29,16 @@ type CleanupFlowOptions = {
   reportError?: ErrorReporter;
 };
 
+type KeyboardClearFlowOptions = {
+  uiText: UiText;
+  confirm: ConfirmAction;
+  clearKeyboardActivity: () => Promise<number>;
+  notify: NotifyAction;
+  onExecutionStart?: BusyHook;
+  onExecutionEnd?: BusyHook;
+  reportError?: ErrorReporter;
+};
+
 type BackupExportFlowOptions = {
   uiText: UiText;
   initialPath?: string;
@@ -94,6 +104,37 @@ export async function runSettingsCleanupFlow(options: CleanupFlowOptions): Promi
   } catch (error) {
     options.reportError?.("cleanup failed", error);
     options.notify(UI_TEXT.toast.cleanupFailed, "error");
+    return false;
+  } finally {
+    options.onExecutionEnd?.();
+  }
+}
+
+/**
+ * Clears the recorded keyboard activity. It is a separate flow from the history
+ * cleanup because the two delete different records and the keyboard totals
+ * outlive the session history that cleanup removes.
+ */
+export async function runKeyboardClearFlow(options: KeyboardClearFlowOptions): Promise<boolean> {
+  const UI_TEXT = options.uiText;
+  const confirmed = await options.confirm({
+    title: UI_TEXT.settings.keyboardDataClear,
+    description: UI_TEXT.settings.keyboardDataClearHint,
+    confirmLabel: UI_TEXT.dialog.confirmDanger,
+    danger: true,
+  });
+  if (!confirmed) {
+    return false;
+  }
+
+  options.onExecutionStart?.();
+  try {
+    await options.clearKeyboardActivity();
+    options.notify(UI_TEXT.toast.keyboardDataClearSuccess, "success");
+    return true;
+  } catch (error) {
+    options.reportError?.("clear keyboard activity failed", error);
+    options.notify(UI_TEXT.toast.keyboardDataClearFailed, "error");
     return false;
   } finally {
     options.onExecutionEnd?.();

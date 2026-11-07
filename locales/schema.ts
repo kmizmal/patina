@@ -3977,6 +3977,11 @@ export const MESSAGE_SCHEMA = {
     "params": [],
     "surface": "frontend"
   },
+  "settings.keyboardDataClearHint": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
   "settings.globalTitleHint": {
     "kind": "string",
     "params": [],
@@ -4656,6 +4661,16 @@ export const MESSAGE_SCHEMA = {
     "surface": "frontend"
   },
   "toast.feedbackOpenFailed": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "toast.keyboardDataClearFailed": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "toast.keyboardDataClearSuccess": {
     "kind": "string",
     "params": [],
     "surface": "frontend"

@@ -196,6 +196,7 @@ export const MESSAGES = {
   "settings.keyboardConfirmTitle": "Turn on keyboard recording?",
   "settings.keyboardConfirmBody": "Patina will record which keys you press and how often, grouped by minute. It does not record characters and does not go through the input method, so the text you type cannot be reconstructed.\n\nThese totals travel with backups and appear in database exports. Turning the switch off stops recording; it does not delete what was already recorded or any backup already taken.",
   "settings.keyboardDataClear": "Clear keyboard records",
+  "settings.keyboardDataClearHint": "Deletes the recorded keyboard activity. Other tracked data and existing backups are unaffected.",
   "settings.idle": "Saved",
   "settings.idleTimeoutHint": "When the current app has audio or similar signals, keep counting that time.",
   "settings.idleTimeoutLabel": "Continue counting",

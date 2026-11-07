@@ -187,6 +187,7 @@ export const MESSAGES = {
   "settings.keyboardConfirmTitle": "开启键盘活动记录？",
   "settings.keyboardConfirmBody": "开启后，Patina 会记录每个键被按下的次数和按键身份（例如 A、Shift、F5），并按分钟汇总。它不记录字符内容，也不使用输入法，所以打出的文字不会被重建。\n\n这些汇总会随备份一起复制、也会出现在导出的数据库里。关闭开关只会停止记录，不会删除已经记录的数据或已经生成的备份。",
   "settings.keyboardDataClear": "清除键盘记录",
+  "settings.keyboardDataClearHint": "删除已记录的键盘活动。其他追踪数据与已有备份不受影响。",
   "settings.idle": "已保存",
   "settings.idleTimeoutHint": "当前应用有音频等持续信号时，继续计入这段时间。",
   "settings.idleTimeoutLabel": "持续计入时间",

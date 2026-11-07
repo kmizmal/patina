@@ -40,6 +40,8 @@ export const MESSAGES = {
   "toast.cleanupFailed": "Не удалось очистить историю. Повторите позже.",
   "toast.cleanupSuccess": "История очищена.",
   "toast.feedbackOpenFailed": "Не удалось открыть ссылку для обратной связи.",
+  "toast.keyboardDataClearFailed": "Не удалось удалить записи клавиатуры. Повторите позже.",
+  "toast.keyboardDataClearSuccess": "Записи клавиатуры удалены.",
   "toast.releaseNotesOpenFailed": "Не удалось открыть описание выпуска.",
   "toast.repositoryOpenFailed": "Не удалось открыть ссылку GitHub.",
   "toast.settingsRuntimeSyncPartial": "Настройки сохранены, но некоторые изменения не удалось применить. Перезапустите приложение.",

@@ -13,6 +13,7 @@ import {
   commitPreparedBackupRestoreFlow,
   prepareBackupRestoreFlow,
   runBackupExportFlow,
+  runKeyboardClearFlow,
   runSettingsCleanupFlow,
 } from "../services/settingsPageActions.ts";
 import {
@@ -109,6 +110,7 @@ export function useSettingsPageState({
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
   const [cleanupRange, setCleanupRange] = useState<CleanupRange>(30);
   const [isCleaning, setIsCleaning] = useState(false);
+  const [isClearingKeyboard, setIsClearingKeyboard] = useState(false);
   const [exportPath, setExportPath] = useState("");
   const [restorePath, setRestorePath] = useState("");
   const [restoreStrategy, setRestoreStrategy] = useState<BackupRestoreStrategy>("merge");
@@ -440,6 +442,21 @@ export function useSettingsPageState({
     });
   }, [cleanupOptions, cleanupRange, confirm, notify, UI_TEXT]);
 
+  const handleClearKeyboardActivity = useCallback(async () => {
+    if (isClearingKeyboard) return;
+    await runKeyboardClearFlow({
+      uiText: UI_TEXT,
+      confirm,
+      clearKeyboardActivity: SettingsRuntimeAdapterService.clearKeyboardActivity,
+      notify,
+      onExecutionStart: () => setIsClearingKeyboard(true),
+      onExecutionEnd: () => setIsClearingKeyboard(false),
+      reportError: (message, error) => {
+        console.error(message, error);
+      },
+    });
+  }, [confirm, isClearingKeyboard, notify, UI_TEXT]);
+
   const handleExportBackup = useCallback(async () => {
     if (isExportingBackup) return;
     await runBackupExportFlow({
@@ -687,9 +704,11 @@ export function useSettingsPageState({
     restoreStrategy,
     setRestoreStrategy,
     isCleaning,
+    isClearingKeyboard,
     isExportingBackup,
     isRestoringBackup,
     handleCleanup,
+    handleClearKeyboardActivity,
     handleExportBackup,
     handlePrepareRestoreBackup,
     handleRestoreBackup,

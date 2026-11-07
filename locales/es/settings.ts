@@ -313,6 +313,7 @@ export const MESSAGES = {
   "settings.keyboardConfirmTitle": "¿Activar el registro del teclado?",
   "settings.keyboardConfirmBody": "Patina registrará qué teclas pulsas y con qué frecuencia, agrupado por minuto. No registra caracteres ni pasa por el método de entrada, así que el texto escrito no se puede reconstruir.\n\nEstos totales viajan con las copias de seguridad y aparecen en las exportaciones de la base de datos. Apagar el interruptor detiene el registro; no borra lo ya registrado ni las copias ya hechas.",
   "settings.keyboardDataClear": "Borrar registros del teclado",
+  "settings.keyboardDataClearHint": "Elimina la actividad de teclado registrada. Los demás datos y las copias existentes no se ven afectados.",
   "settings.idle": "Guardado",
   "settings.idleTimeoutHint": "Sigue contando el tiempo si la app actual tiene audio u otras señales similares.",
   "settings.idleTimeoutLabel": "Continuar contando",

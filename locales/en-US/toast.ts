@@ -40,6 +40,8 @@ export const MESSAGES = {
   "toast.cleanupFailed": "Could not clear history records. Try again later.",
   "toast.cleanupSuccess": "History records cleared.",
   "toast.feedbackOpenFailed": "Could not open feedback link.",
+  "toast.keyboardDataClearFailed": "Could not clear keyboard records. Try again later.",
+  "toast.keyboardDataClearSuccess": "Keyboard records cleared.",
   "toast.releaseNotesOpenFailed": "Could not open release notes.",
   "toast.repositoryOpenFailed": "Could not open GitHub link.",
   "toast.settingsRuntimeSyncPartial": "Settings were saved, but some changes could not be applied. Restart the app.",

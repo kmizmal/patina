@@ -1046,7 +1046,10 @@ export const LOCALE_SOURCE_REVIEWS = {
     "update.updateFailed": "325690af9568c99d",
     "update.updateFailedDialog": "325690af9568c99d",
     "update.updateProcessFailed": "757d62f2d4ab63db",
-    "update.updateReadyDetail": "33cee9a82d5aa719"
+    "update.updateReadyDetail": "33cee9a82d5aa719",
+    "settings.keyboardDataClearHint": "6e92695673783313",
+    "toast.keyboardDataClearFailed": "377f059e7ef26432",
+    "toast.keyboardDataClearSuccess": "00da610d92de0a42"
   },
   "es": {
     "about.description": "9e6291ff14b79ed3",
@@ -2094,7 +2097,10 @@ export const LOCALE_SOURCE_REVIEWS = {
     "update.updateFailed": "325690af9568c99d",
     "update.updateFailedDialog": "325690af9568c99d",
     "update.updateProcessFailed": "757d62f2d4ab63db",
-    "update.updateReadyDetail": "33cee9a82d5aa719"
+    "update.updateReadyDetail": "33cee9a82d5aa719",
+    "settings.keyboardDataClearHint": "6e92695673783313",
+    "toast.keyboardDataClearFailed": "377f059e7ef26432",
+    "toast.keyboardDataClearSuccess": "00da610d92de0a42"
   },
   "ru-RU": {
     "about.description": "9e6291ff14b79ed3",
@@ -3142,6 +3148,9 @@ export const LOCALE_SOURCE_REVIEWS = {
     "update.updateFailed": "325690af9568c99d",
     "update.updateFailedDialog": "325690af9568c99d",
     "update.updateProcessFailed": "757d62f2d4ab63db",
-    "update.updateReadyDetail": "33cee9a82d5aa719"
+    "update.updateReadyDetail": "33cee9a82d5aa719",
+    "settings.keyboardDataClearHint": "6e92695673783313",
+    "toast.keyboardDataClearFailed": "377f059e7ef26432",
+    "toast.keyboardDataClearSuccess": "00da610d92de0a42"
   }
 } as const;

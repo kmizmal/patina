@@ -40,6 +40,8 @@ export const MESSAGES = {
   "toast.cleanupFailed": "历史记录清理失败，可稍后重试。",
   "toast.cleanupSuccess": "历史记录已清理。",
   "toast.feedbackOpenFailed": "未能打开反馈链接。",
+  "toast.keyboardDataClearFailed": "键盘记录清除失败，可稍后重试。",
+  "toast.keyboardDataClearSuccess": "键盘记录已清除。",
   "toast.releaseNotesOpenFailed": "未能打开更新说明链接。",
   "toast.repositoryOpenFailed": "未能打开 GitHub 链接。",
   "toast.settingsRuntimeSyncPartial": "设置已保存，部分更改未能生效，请重启应用。",

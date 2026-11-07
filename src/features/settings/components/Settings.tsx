@@ -66,9 +66,11 @@ export default function Settings({
     restoreStrategy,
     setRestoreStrategy,
     isCleaning,
+    isClearingKeyboard,
     isExportingBackup,
     isRestoringBackup,
     handleCleanup,
+    handleClearKeyboardActivity,
     handleExportBackup,
     handlePrepareRestoreBackup,
     handleRestoreBackup,
@@ -246,6 +248,8 @@ export default function Settings({
             onTitleRecordingEnabledChange={(nextChecked) => handleChange("titleRecordingEnabled", nextChecked)}
             keyboardActivityEnabled={draftSettings.keyboardActivityEnabled}
             onKeyboardActivityEnabledChange={requestKeyboardActivityChange}
+            isClearingKeyboard={isClearingKeyboard}
+            onClearKeyboardActivity={() => { void handleClearKeyboardActivity(); }}
           />
 
           <SettingsAppearancePanel

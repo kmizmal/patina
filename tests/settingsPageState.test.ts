@@ -21,6 +21,7 @@ import {
   prepareBackupRestoreFlow,
   commitPreparedBackupRestoreFlow,
   runSettingsCleanupFlow,
+  runKeyboardClearFlow,
 } from "../src/features/settings/services/settingsPageActions.ts";
 import {
   normalizeSettingsRecord,
@@ -836,6 +837,96 @@ await runTest("runSettingsCleanupFlow reports failures and still clears busy sta
   assert.equal(result, false);
   assert.deepEqual(events, ["start", "notify:error", "end"]);
   assert.deepEqual(errors, ["cleanup failed:db busy"]);
+});
+
+await runTest("runKeyboardClearFlow clears confirmed keyboard records without a page reload", async () => {
+  const events: string[] = [];
+
+  const result = await runKeyboardClearFlow({
+    uiText: ZH_TEXT,
+    confirm: async (options) => {
+      assert.equal(options.danger, true);
+      assert.equal(options.title, ZH_TEXT.settings.keyboardDataClear);
+      assert.equal(options.description, ZH_TEXT.settings.keyboardDataClearHint);
+      events.push("confirm");
+      return true;
+    },
+    clearKeyboardActivity: async () => {
+      events.push("clear");
+      return 4;
+    },
+    notify: (_message, tone) => {
+      events.push(`notify:${tone}`);
+    },
+    onExecutionStart: () => {
+      events.push("start");
+    },
+    onExecutionEnd: () => {
+      events.push("end");
+    },
+  });
+
+  assert.equal(result, true);
+  assert.deepEqual(events, [
+    "confirm",
+    "start",
+    "clear",
+    "notify:success",
+    "end",
+  ]);
+});
+
+await runTest("runKeyboardClearFlow stops when the confirmation is dismissed", async () => {
+  const events: string[] = [];
+  const result = await runKeyboardClearFlow({
+    uiText: ZH_TEXT,
+    confirm: async () => false,
+    clearKeyboardActivity: async () => {
+      events.push("clear");
+      return 0;
+    },
+    notify: (_message, tone) => {
+      events.push(`notify:${tone}`);
+    },
+    onExecutionStart: () => {
+      events.push("start");
+    },
+    onExecutionEnd: () => {
+      events.push("end");
+    },
+  });
+
+  assert.equal(result, false);
+  assert.deepEqual(events, []);
+});
+
+await runTest("runKeyboardClearFlow reports failures and still clears busy state", async () => {
+  const events: string[] = [];
+  const errors: string[] = [];
+
+  const result = await runKeyboardClearFlow({
+    uiText: ZH_TEXT,
+    confirm: async () => true,
+    clearKeyboardActivity: async () => {
+      throw new Error("db busy");
+    },
+    notify: (_message, tone) => {
+      events.push(`notify:${tone}`);
+    },
+    onExecutionStart: () => {
+      events.push("start");
+    },
+    onExecutionEnd: () => {
+      events.push("end");
+    },
+    reportError: (message, error) => {
+      errors.push(`${message}:${error instanceof Error ? error.message : String(error)}`);
+    },
+  });
+
+  assert.equal(result, false);
+  assert.deepEqual(events, ["start", "notify:error", "end"]);
+  assert.deepEqual(errors, ["clear keyboard activity failed:db busy"]);
 });
 
 await runTest("prepareBackupRestoreWithDeps separates native and external backup counts", async () => {

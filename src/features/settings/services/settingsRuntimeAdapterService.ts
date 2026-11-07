@@ -16,6 +16,7 @@ import {
   type BackupPreview,
 } from "../../../platform/backup/backupRuntimeGateway.ts";
 import { copyTextToClipboard } from "../../../platform/desktop/clipboardGateway.ts";
+import { clearKeyboardActivity } from "../../../platform/persistence/keyboardActivityGateway.ts";
 import { openExternalUrl } from "../../../platform/desktop/externalUrlGateway.ts";
 import {
   getStorageSnapshot,
@@ -198,6 +199,15 @@ export class SettingsRuntimeAdapterService {
     await clearSessionsByRangeWithDeps(range, nowMs, {
       clearSessionsBefore,
     });
+  }
+
+  /**
+   * Deletes every stored keyboard bucket. The renderer confirms first; this
+   * layer only forwards the call so feature code never imports the platform
+   * module directly.
+   */
+  static async clearKeyboardActivity(): Promise<number> {
+    return clearKeyboardActivity();
   }
 
   static async exportBackupWithPicker(initialPath?: string): Promise<string | null> {

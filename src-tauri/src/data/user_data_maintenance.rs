@@ -253,6 +253,25 @@ async fn delete_sessions_before_in_pool(
         .map_err(|error| {
             SqliteOperationError::from_sqlx("delete historical web activity", error)
         })?;
+    // Keyboard buckets expire on the same cutoff as everything else. Leaving
+    // them behind would mean "clear history" quietly kept a record of what was
+    // typed, which is the one outcome this feature must never produce.
+    if crate::data::schema_contracts::has_keyboard_activity_schema(pool).await? {
+        sqlx::query("DELETE FROM keyboard_key_minutes WHERE bucket_start_ms < ?")
+            .bind(cutoff_time)
+            .execute(&mut *tx)
+            .await
+            .map_err(|error| {
+                SqliteOperationError::from_sqlx("delete historical keyboard activity", error)
+            })?;
+        sqlx::query("DELETE FROM keyboard_combo_minutes WHERE bucket_start_ms < ?")
+            .bind(cutoff_time)
+            .execute(&mut *tx)
+            .await
+            .map_err(|error| {
+                SqliteOperationError::from_sqlx("delete historical keyboard combos", error)
+            })?;
+    }
     icon_retention::prune_apps(&mut tx, &apps, &named)
         .await
         .map_err(cache_error)?;

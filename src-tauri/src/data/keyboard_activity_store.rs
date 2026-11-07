@@ -55,10 +55,3 @@ pub async fn clear_all<R: Runtime>(app: &AppHandle<R>) -> Result<u64, String> {
     let pool = wait_for_sqlite_pool(app).await?;
     keyboard_activity::clear_all(&pool).await
 }
-
-/// Reports whether the keyboard tables exist yet, so callers can present "not
-/// recorded" instead of an error on a database that predates the migration.
-pub async fn is_available<R: Runtime>(app: &AppHandle<R>) -> Result<bool, String> {
-    let pool = wait_for_sqlite_pool(app).await?;
-    keyboard_activity::is_available(&pool).await
-}

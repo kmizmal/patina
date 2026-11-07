@@ -139,8 +139,3 @@ pub(crate) fn apply_setting_change(enabled: bool) {
         keyboard_capture::discard_open_bucket();
     }
 }
-
-/// Used by diagnostics and tests to read the supervisor's view of capture.
-pub(crate) fn is_capturing() -> bool {
-    keyboard_capture::is_running()
-}

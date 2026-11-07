@@ -18,6 +18,7 @@
 //!   aggregation happens in memory and the flush is driven by the caller, so a
 //!   slow database never stalls the input queue.
 
+use crate::domain::keyboard_activity::minute_bucket_start;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::atomic::{AtomicU64, Ordering};
@@ -44,9 +45,6 @@ const VK_NONE: u16 = 0xFF;
 const RI_KEY_BREAK: u16 = 0x01;
 /// `RAWKEYBOARD.Flags` bit set for the E0-prefixed variant of a key.
 const RI_KEY_E0: u16 = 0x02;
-/// Flush cadence for the in-memory buffer. Keystrokes never wait on SQLite;
-/// they accumulate here and one flush per minute is written.
-const FLUSH_INTERVAL: Duration = Duration::from_secs(60);
 /// Upper bound on distinct keys tracked in one bucket. A full-size board has 104
 /// keys; this only guards against a stuck/repeating device filling memory.
 const MAX_KEYS_PER_BUCKET: usize = 256;
@@ -180,11 +178,6 @@ impl KeyBuffer {
         self.bucket_start_ms = current_bucket;
         Some(batch)
     }
-}
-
-fn minute_bucket_start(timestamp_ms: i64) -> i64 {
-    const MINUTE_MS: i64 = 60_000;
-    timestamp_ms - timestamp_ms.rem_euclid(MINUTE_MS)
 }
 
 /// Installs the global keyboard capture.
@@ -382,7 +375,9 @@ unsafe extern "system" fn capture_window_proc(
             DefWindowProcW(hwnd, msg, wparam, lparam)
         }
         WM_CLOSE => {
-            unsafe { DestroyWindow(hwnd) };
+            // DestroyWindow fails only for an already-destroyed handle, which the
+            // teardown path tolerates; the message loop still needs to stop.
+            let _ = unsafe { DestroyWindow(hwnd) };
             LRESULT(0)
         }
         WM_DESTROY => {

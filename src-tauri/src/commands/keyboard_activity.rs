@@ -1,6 +1,5 @@
 use crate::commands::{error::CommandErrorDto, window_guard::require_main_window};
-use crate::data::repositories::keyboard_activity;
-use crate::data::{sqlite_error::SqliteOperationError, sqlite_pool::wait_for_sqlite_pool};
+use crate::data::{keyboard_activity_store, sqlite_error::SqliteOperationError};
 use crate::domain::keyboard_activity::KeyboardActivitySnapshot;
 use tauri::{AppHandle, Runtime, WebviewWindow};
 
@@ -16,10 +15,7 @@ pub async fn cmd_get_keyboard_activity_snapshot<R: Runtime>(
     window: WebviewWindow<R>,
 ) -> Result<KeyboardActivitySnapshot, CommandErrorDto> {
     require_main_window(&window)?;
-    let pool = wait_for_sqlite_pool(&app)
-        .await
-        .map_err(|error| CommandErrorDto::new("SQLITE_UNAVAILABLE", error, true))?;
-    keyboard_activity::load_snapshot(&pool, range_start_ms, range_end_ms)
+    keyboard_activity_store::load_snapshot(&app, range_start_ms, range_end_ms)
         .await
         .map_err(|error| {
             SqliteOperationError::operation_failed("reading keyboard activity", error).into()
@@ -34,10 +30,9 @@ pub async fn cmd_clear_keyboard_activity<R: Runtime>(
     window: WebviewWindow<R>,
 ) -> Result<u64, CommandErrorDto> {
     require_main_window(&window)?;
-    let pool = wait_for_sqlite_pool(&app)
+    keyboard_activity_store::clear_all(&app)
         .await
-        .map_err(|error| CommandErrorDto::new("SQLITE_UNAVAILABLE", error, true))?;
-    keyboard_activity::clear_all(&pool).await.map_err(|error| {
-        SqliteOperationError::operation_failed("clearing keyboard activity", error).into()
-    })
+        .map_err(|error| {
+            SqliteOperationError::operation_failed("clearing keyboard activity", error).into()
+        })
 }

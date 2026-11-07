@@ -244,3 +244,147 @@
   }
 
 }
+
+/* ---- Keyboard heatmap ----
+   Reuses the day heatmap's colour vocabulary on purpose: the same
+   accent-over-elevated mix, so the two panels read as one surface instead of
+   two different visual systems. */
+
+.data-keyboard-heatmap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.data-keyboard-heatmap-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.data-keyboard-heatmap-layout {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.data-keyboard-heatmap-keys {
+  position: relative;
+  flex: 0 0 auto;
+  transform-origin: top left;
+}
+
+.data-keyboard-key {
+  position: absolute;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 2px 4px;
+  border: 1px solid color-mix(in srgb, var(--qp-accent-default) 7%, var(--qp-border-subtle));
+  border-radius: 4px;
+  background: color-mix(
+    in srgb,
+    var(--qp-accent-default) calc(var(--keyboard-intensity, 0) * 62%),
+    var(--qp-bg-elevated)
+  );
+  color: var(--qp-text-subtle);
+  font-size: 9px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+.data-keyboard-key[data-active="true"] {
+  color: var(--qp-text-primary);
+}
+
+.data-keyboard-key:focus {
+  outline: none;
+}
+
+.data-keyboard-key:focus-visible {
+  z-index: 1;
+  outline: 2px solid color-mix(in srgb, var(--qp-accent-default) 52%, transparent);
+  outline-offset: 1px;
+}
+
+.data-keyboard-heatmap-legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--qp-text-subtle);
+  font-size: 11px;
+}
+
+.data-keyboard-heatmap-legend-swatch {
+  height: 10px;
+  width: 18px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--qp-accent-default) 7%, var(--qp-border-subtle));
+}
+
+.data-keyboard-heatmap-columns {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+@media (min-width: 1024px) {
+  .data-keyboard-heatmap-columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.data-keyboard-heatmap-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.data-keyboard-heatmap-list-row {
+  display: grid;
+  align-items: center;
+  gap: 8px;
+  grid-template-columns: 64px minmax(0, 1fr) auto;
+  font-size: 12px;
+}
+
+.data-keyboard-heatmap-list-bar {
+  position: relative;
+  height: 6px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: var(--qp-bg-elevated);
+}
+
+.data-keyboard-heatmap-list-bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--qp-accent-default) 62%, transparent);
+}
+
+.data-keyboard-heatmap-list-value {
+  color: var(--qp-text-subtle);
+  font-variant-numeric: tabular-nums;
+}
+
+.data-keyboard-heatmap-subheading {
+  margin: 0 0 6px;
+  color: var(--qp-text-subtle);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.data-keyboard-heatmap-empty {
+  color: var(--qp-text-subtle);
+  font-size: 12px;
+  padding: 12px 0;
+}

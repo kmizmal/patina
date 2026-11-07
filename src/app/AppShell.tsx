@@ -316,7 +316,10 @@ export default function AppShellContent({
                 onToast={pushToast}
                 {...quickClassificationCallbacks}
                 uiLanguage={uiTextLanguage}
-                webActivityEnabled={appSettings.webActivityEnabled}
+                captureSettings={{
+                  webActivityEnabled: appSettings.webActivityEnabled,
+                  keyboardActivityEnabled: appSettings.keyboardActivityEnabled,
+                }}
               />
             ),
             tools: (

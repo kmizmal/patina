@@ -55,6 +55,8 @@ import {
 } from "../services/dataBootstrapSnapshot.ts";
 import { prewarmDataFirstScreen } from "../services/dataFirstScreenPrewarm.ts";
 import QuietPageHeader from "../../../shared/components/QuietPageHeader";
+import DataOverviewPanel from "./DataOverviewPanel.tsx";
+import type { DataCaptureSettings } from "../services/dataCaptureSettings.ts";
 import type { TrackerHealthSnapshot } from "../../../shared/types/tracking";
 import type { QuietToastTone } from "../../../shared/types/toast.ts";
 import { formatLocalDateKey } from "../../../shared/lib/localDate.ts";
@@ -75,7 +77,6 @@ import {
   filterDataAppOptionsForQuery,
 } from "../services/dataAppSearch.ts";
 import DataAppTrendPanel from "./DataAppTrendPanel.tsx";
-import DataTrendPanel from "./DataTrendPanel.tsx";
 import DataHeatmapPanel, { type HeatmapGranularity } from "./DataHeatmapPanel.tsx";
 import { useDataNavigationReadiness } from "../hooks/useDataNavigationReadiness.ts";
 import { AppClassification } from "../../../shared/classification/appClassification.ts";
@@ -101,7 +102,7 @@ interface Props {
   mergeThresholdSecs: number;
   onOpenHistoryDate?: (dateKey: string) => void;
   uiLanguage: AppLanguage;
-  webActivityEnabled: boolean;
+  captureSettings: DataCaptureSettings;
   onToast?: (message: string, tone?: QuietToastTone) => void;
   onOverridesChanged: () => void;
   onQuickActionError: (message: string) => void;
@@ -149,9 +150,10 @@ export default function Data({
   onOverridesChanged,
   onQuickActionError,
   uiLanguage,
-  webActivityEnabled,
+  captureSettings,
   onInitialContentReady,
 }: Props) {
+  const { webActivityEnabled, keyboardActivityEnabled } = captureSettings;
   const UI_TEXT = useLocaleText();
   const quickClassification = useQuickClassificationLauncher();
   const { openAtPointer: openQuickClassificationAtPointer } = quickClassification;
@@ -1048,39 +1050,39 @@ export default function Data({
 
       <div className="data-page-scroll min-h-0 flex-1 overflow-y-auto pr-1 qp-scroll-region qp-scroll-region-stable">
         <div className="data-dashboard-grid">
-          <div className="qp-panel p-5 data-overview">
-            <DataTrendPanel
-              allTimeEndDateKey={allTimeEndDateKey}
-              allTimeStartDateKey={allTimeStartDateKey}
-              selection={effectiveSelectedTrendRange}
-              readState={{ ...overviewTrend, viewModel: visibleTrendViewModel }}
-              chartRef={overviewTrendChart.chartRef}
-              initialDimension={overviewTrendChart.initialDimension}
-              canOpenHistory={canOpenTrendHistory}
-              onSelectionChange={setSelectedTrendRange}
-              onMouseDownCapture={handleTrendMouseDownCapture}
-              onDoubleClickCapture={handleTrendDoubleClickCapture}
-              onMouseMove={handleTrendMouseMove}
-              onMouseLeave={handleTrendMouseLeave}
-            />
-
-            <DataHeatmapPanel
-              selectedHeatmapView={selectedHeatmapView}
-              selectedHeatmapViewKey={selectedHeatmapViewKey}
-              rows={visibleHeatmapRows}
-              granularity={heatmapGranularity}
-              granularityOptions={heatmapGranularityOptions}
-              canSelectOlderHeatmapView={canSelectOlderHeatmapView}
-              canSelectNewerHeatmapView={canSelectNewerHeatmapView}
-              onGranularityChange={setHeatmapGranularity}
-              onSelectAdjacentHeatmapView={selectAdjacentHeatmapView}
-              onOpenHistoryDate={onOpenHistoryDate}
-              loading={heatmapLoading && !overviewHeatmap.hasSnapshot && !canUseBootstrapHeatmap}
-              errorMessage={heatmapColdError ? UI_TEXT.data.heatmapError : null}
-              refreshFailed={heatmapError && !heatmapColdError}
-              onRetry={overviewHeatmap.retry}
-            />
-          </div>
+          <DataOverviewPanel
+            trend={{
+              allTimeStartDateKey,
+              allTimeEndDateKey,
+              selection: effectiveSelectedTrendRange,
+              onSelectionChange: setSelectedTrendRange,
+              readState: { ...overviewTrend, viewModel: visibleTrendViewModel },
+              chartRef: overviewTrendChart.chartRef,
+              initialDimension: overviewTrendChart.initialDimension,
+              canOpenHistory: canOpenTrendHistory,
+              onMouseDownCapture: handleTrendMouseDownCapture,
+              onDoubleClickCapture: handleTrendDoubleClickCapture,
+              onMouseMove: handleTrendMouseMove,
+              onMouseLeave: handleTrendMouseLeave,
+            }}
+            heatmap={{
+              selectedHeatmapView,
+              selectedHeatmapViewKey,
+              rows: visibleHeatmapRows,
+              granularity: heatmapGranularity,
+              granularityOptions: heatmapGranularityOptions,
+              canSelectOlderHeatmapView,
+              canSelectNewerHeatmapView,
+              onGranularityChange: setHeatmapGranularity,
+              onSelectAdjacentHeatmapView: selectAdjacentHeatmapView,
+              onOpenHistoryDate,
+              loading: heatmapLoading && !overviewHeatmap.hasSnapshot && !canUseBootstrapHeatmap,
+              errorMessage: heatmapColdError ? UI_TEXT.data.heatmapError : null,
+              refreshFailed: heatmapError && !heatmapColdError,
+              onRetry: overviewHeatmap.retry,
+            }}
+            keyboardActivityEnabled={keyboardActivityEnabled}
+          />
 
           <DataAppTrendPanel
             allTimeEndDateKey={allTimeEndDateKey}

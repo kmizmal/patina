@@ -458,10 +458,15 @@ pub(super) async fn schema_revision_limit(pool: &Pool<Sqlite>) -> Result<usize, 
             revision_limit == crate::data::schema::FREE_FOCUS_MIGRATION_VERSION as usize
                 && has_reminder_identity_schema(pool).await?,
         );
-    Ok(revision_limit
+    let revision_limit = revision_limit
         + usize::from(
             revision_limit == crate::data::schema::REMINDER_IDENTITY_MIGRATION_VERSION as usize
                 && has_focus_history(pool).await?,
+        );
+    Ok(revision_limit
+        + usize::from(
+            revision_limit == crate::data::schema::FOCUS_HISTORY_VERSION as usize
+                && has_keyboard_activity_schema(pool).await?,
         ))
 }
 

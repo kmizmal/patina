@@ -150,3 +150,18 @@ pub async fn load_snapshot(
         combos,
     })
 }
+
+/// Deletes every recorded keyboard bucket. Used by the per-feature clear action;
+/// it deliberately does not touch sessions or any other tracked data.
+pub async fn clear_all(pool: &Pool<Sqlite>) -> Result<u64, String> {
+    let keys = sqlx::query("DELETE FROM keyboard_key_minutes")
+        .execute(pool)
+        .await
+        .map_err(|error| format!("failed to clear keyboard key minutes: {error}"))?
+        .rows_affected();
+    sqlx::query("DELETE FROM keyboard_combo_minutes")
+        .execute(pool)
+        .await
+        .map_err(|error| format!("failed to clear keyboard combo minutes: {error}"))?;
+    Ok(keys)
+}

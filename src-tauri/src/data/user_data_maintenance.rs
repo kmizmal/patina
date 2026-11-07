@@ -256,7 +256,12 @@ async fn delete_sessions_before_in_pool(
     // Keyboard buckets expire on the same cutoff as everything else. Leaving
     // them behind would mean "clear history" quietly kept a record of what was
     // typed, which is the one outcome this feature must never produce.
-    if crate::data::schema_contracts::has_keyboard_activity_schema(pool).await? {
+    let has_keyboard = crate::data::schema_contracts::has_keyboard_activity_schema(pool)
+        .await
+        .map_err(|error| {
+            SqliteOperationError::operation_failed("inspect keyboard schema", error)
+        })?;
+    if has_keyboard {
         sqlx::query("DELETE FROM keyboard_key_minutes WHERE bucket_start_ms < ?")
             .bind(cutoff_time)
             .execute(&mut *tx)

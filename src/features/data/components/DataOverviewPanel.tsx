@@ -1,10 +1,14 @@
-import type { Ref } from "react";
+import { Suspense, lazy, type Ref } from "react";
 import DataHeatmapPanel from "./DataHeatmapPanel.tsx";
 import DataTrendPanel from "./DataTrendPanel.tsx";
-import KeyboardHeatmapSection from "./KeyboardHeatmapSection.tsx";
 import type { HeatmapGranularity } from "./DataHeatmapPanel.tsx";
 import type { HeatmapSelection, HeatmapWeek } from "../services/dataHeatmapReadModel.ts";
 import type { DataTrendRangeSelection } from "../services/dataTrendRange.ts";
+
+// Loaded on demand: the layout geometry is pure table data worth a few KiB and
+// most sessions never open this panel, so it must not weigh on the data page
+// for everyone.
+const KeyboardHeatmapSection = lazy(() => import("./KeyboardHeatmapSection.tsx"));
 
 /**
  * The overview cluster of the data page: trend chart, day heatmap, and the
@@ -88,7 +92,11 @@ export default function DataOverviewPanel({
       />
 
       {keyboardActivityEnabled
-        ? <KeyboardHeatmapSection selection={trend.selection} />
+        ? (
+          <Suspense fallback={null}>
+            <KeyboardHeatmapSection selection={trend.selection} />
+          </Suspense>
+        )
         : null}
     </div>
   );

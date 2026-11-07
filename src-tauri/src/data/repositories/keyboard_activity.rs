@@ -29,7 +29,7 @@ pub(crate) async fn apply_minute(
         .begin()
         .await
         .map_err(|error| SqliteOperationError::from_sqlx("writing keyboard activity", error))?;
-    apply_minute_in_connection(&mut *tx, keys, combos).await?;
+    apply_minute_in_connection(&mut tx, keys, combos).await?;
     tx.commit()
         .await
         .map_err(|error| SqliteOperationError::from_sqlx("committing keyboard activity", error))

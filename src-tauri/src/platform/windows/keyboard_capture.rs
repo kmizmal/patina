@@ -385,7 +385,13 @@ unsafe extern "system" fn capture_window_proc(
             unsafe { PostQuitMessage(0) };
             LRESULT(0)
         }
-        _ => unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) },
+        _ => {
+            // Temporary: prove the window procedure is receiving anything at all.
+            if msg != 0x0084 {
+                eprintln!("[keyboard] wndproc msg=0x{msg:04X}");
+            }
+            unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) }
+        }
     }
 }
 

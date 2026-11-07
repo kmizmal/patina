@@ -70,6 +70,68 @@ export const MESSAGES = {
   "data.duration": "Длительность",
   "data.heatmapDaily": "По дням",
   "data.heatmapError": "Тепловая карта временно недоступна",
+  "data.keyboardHeatmap": "Тепловая карта клавиатуры",
+  "data.keyboardDisabled": "Запись клавиатуры выключена. Включите «Записывать активность клавиатуры», чтобы увидеть распределение нажатий.",
+  "data.keyboardError": "Данные клавиатуры временно недоступны",
+  "data.keyboardRetry": "Повторить",
+  "data.keyboardLoading": "Чтение данных клавиатуры…",
+  "data.keyboardEmpty": "В этом диапазоне пока нет активности клавиатуры",
+  "data.keyboardLayoutMismatch": "Ни одна из записанных клавиш не относится к этой раскладке. Попробуйте другую.",
+  "data.keyboardTopKeys": "Самые частые клавиши",
+  "data.keyboardTopCombos": "Самые частые сочетания",
+  "data.keyboardNoCombos": "В этом диапазоне нет сочетаний клавиш",
+  "data.keyboardKeyTooltip": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "",
+      {
+        "$op": "arg",
+        "name": "label"
+      },
+      " · ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " нажатий · ",
+      {
+        "$op": "arg",
+        "name": "share"
+      },
+      " от всех"
+    ]
+  }
+  },
+  "accessibility.data.keyboardHeatmap": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "Тепловая карта клавиатуры: ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " нажатий"
+    ]
+  }
+  },
+  "data.keyboardLayouts.60%": "60%",
+  "data.keyboardLayouts.75%": "75%",
+  "data.keyboardLayouts.TKL": "TKL",
+  "data.keyboardLayouts.Full": "Полный размер",
+  "data.keyboardLayouts.Laptop": "Ноутбук",
+  "accessibility.data.keyboardLayoutFilter": "Выбрать раскладку клавиатуры",
+  "data.keyboardRegions.letters": "Буквы",
+  "data.keyboardRegions.digits": "Цифры",
+  "data.keyboardRegions.symbols": "Символы",
+  "data.keyboardRegions.modifiers": "Модификаторы",
+  "data.keyboardRegions.editing": "Редактирование",
+  "data.keyboardRegions.function": "Функциональные клавиши",
+  "data.keyboardRegions.navigation": "Навигация",
+  "data.keyboardRegions.numpad": "Цифровой блок",
   "data.heatmapWeekly": "По неделям",
   "data.interactionHint": "Двойной щелчок — детали · Ctrl — выбор",
   "data.monthlyAverage": "В среднем за месяц",

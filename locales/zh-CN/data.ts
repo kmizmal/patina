@@ -59,6 +59,67 @@ export const MESSAGES = {
   "data.duration": "时长",
   "data.heatmapDaily": "每日",
   "data.heatmapError": "热力图暂时不可用",
+  "data.keyboardHeatmap": "键盘热力图",
+  "data.keyboardDisabled": "键盘记录已关闭。打开「记录键盘活动」后，这里会显示击键分布。",
+  "data.keyboardError": "键盘数据暂时不可用",
+  "data.keyboardRetry": "重试",
+  "data.keyboardLoading": "正在读取键盘数据…",
+  "data.keyboardEmpty": "这个时间范围内还没有键盘记录",
+  "data.keyboardLayoutMismatch": "这个范围内记录的按键都不在当前布局中，换个布局看看",
+  "data.keyboardTopKeys": "高频按键",
+  "data.keyboardTopCombos": "高频组合键",
+  "data.keyboardNoCombos": "这个范围内没有组合键",
+  "data.keyboardKeyTooltip": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "",
+      {
+        "$op": "arg",
+        "name": "label"
+      },
+      " · ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " 次 · 占比 ",
+      {
+        "$op": "arg",
+        "name": "share"
+      }
+    ]
+  }
+  },
+  "accessibility.data.keyboardHeatmap": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "键盘热力图：",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " 次击键"
+    ]
+  }
+  },
+  "data.keyboardLayouts.60%": "60%",
+  "data.keyboardLayouts.75%": "75%",
+  "data.keyboardLayouts.TKL": "TKL",
+  "data.keyboardLayouts.Full": "全尺寸",
+  "data.keyboardLayouts.Laptop": "笔记本",
+  "accessibility.data.keyboardLayoutFilter": "选择键盘布局",
+  "data.keyboardRegions.letters": "字母区",
+  "data.keyboardRegions.digits": "数字区",
+  "data.keyboardRegions.symbols": "符号区",
+  "data.keyboardRegions.modifiers": "修饰键",
+  "data.keyboardRegions.editing": "编辑键",
+  "data.keyboardRegions.function": "功能键",
+  "data.keyboardRegions.navigation": "导航键",
+  "data.keyboardRegions.numpad": "数字小键盘",
   "data.heatmapWeekly": "每周",
   "data.interactionHint": "双击详情 · Ctrl 多选",
   "data.monthlyAverage": "月均",

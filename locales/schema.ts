@@ -1197,6 +1197,136 @@ export const MESSAGE_SCHEMA = {
     "params": [],
     "surface": "frontend"
   },
+  "data.keyboardHeatmap": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardDisabled": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardError": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRetry": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLoading": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardEmpty": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLayoutMismatch": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardTopKeys": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardTopCombos": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardNoCombos": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "accessibility.data.keyboardLayoutFilter": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardKeyTooltip": {
+    "kind": "message",
+    "params": [{"name": "label", "type": "string", "optional": false}, {"name": "count", "type": "string", "optional": false}, {"name": "share", "type": "string", "optional": false}],
+    "surface": "frontend"
+  },
+  "accessibility.data.keyboardHeatmap": {
+    "kind": "message",
+    "params": [{"name": "count", "type": "string", "optional": false}],
+    "surface": "frontend"
+  },
+  "data.keyboardLayouts.60%": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLayouts.75%": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLayouts.TKL": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLayouts.Full": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardLayouts.Laptop": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.letters": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.digits": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.symbols": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.modifiers": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.editing": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.function": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.navigation": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardRegions.numpad": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
   "data.heatmapDaily": {
     "kind": "string",
     "params": [],

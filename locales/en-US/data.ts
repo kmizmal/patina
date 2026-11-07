@@ -68,6 +68,68 @@ export const MESSAGES = {
   "data.duration": "Duration",
   "data.heatmapDaily": "Daily",
   "data.heatmapError": "The heatmap is temporarily unavailable",
+  "data.keyboardHeatmap": "Keyboard heatmap",
+  "data.keyboardDisabled": "Keyboard recording is off. Turn on \"Record keyboard activity\" to see how your keys are used.",
+  "data.keyboardError": "Keyboard data is temporarily unavailable",
+  "data.keyboardRetry": "Retry",
+  "data.keyboardLoading": "Reading keyboard data…",
+  "data.keyboardEmpty": "No keyboard activity in this range yet",
+  "data.keyboardLayoutMismatch": "None of the recorded keys belong to this layout. Try another one.",
+  "data.keyboardTopKeys": "Most pressed keys",
+  "data.keyboardTopCombos": "Most used combinations",
+  "data.keyboardNoCombos": "No key combinations in this range",
+  "data.keyboardKeyTooltip": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "",
+      {
+        "$op": "arg",
+        "name": "label"
+      },
+      " · ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " presses · ",
+      {
+        "$op": "arg",
+        "name": "share"
+      },
+      " of all"
+    ]
+  }
+  },
+  "accessibility.data.keyboardHeatmap": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "Keyboard heatmap: ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " presses"
+    ]
+  }
+  },
+  "data.keyboardLayouts.60%": "60%",
+  "data.keyboardLayouts.75%": "75%",
+  "data.keyboardLayouts.TKL": "TKL",
+  "data.keyboardLayouts.Full": "Full size",
+  "data.keyboardLayouts.Laptop": "Laptop",
+  "accessibility.data.keyboardLayoutFilter": "Choose keyboard layout",
+  "data.keyboardRegions.letters": "Letters",
+  "data.keyboardRegions.digits": "Digits",
+  "data.keyboardRegions.symbols": "Symbols",
+  "data.keyboardRegions.modifiers": "Modifiers",
+  "data.keyboardRegions.editing": "Editing keys",
+  "data.keyboardRegions.function": "Function keys",
+  "data.keyboardRegions.navigation": "Navigation keys",
+  "data.keyboardRegions.numpad": "Numpad",
   "data.heatmapWeekly": "Weekly",
   "data.interactionHint": "Double-click details · Ctrl select",
   "data.monthlyAverage": "Monthly avg.",

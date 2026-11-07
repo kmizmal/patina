@@ -89,6 +89,68 @@ export const MESSAGES = {
   "data.duration": "Duración",
   "data.heatmapDaily": "Diario",
   "data.heatmapError": "El mapa de calor no está disponible temporalmente",
+  "data.keyboardHeatmap": "Mapa de calor del teclado",
+  "data.keyboardDisabled": "La grabación del teclado está desactivada. Activa «Registrar actividad del teclado» para ver el uso de las teclas.",
+  "data.keyboardError": "Los datos del teclado no están disponibles temporalmente",
+  "data.keyboardRetry": "Reintentar",
+  "data.keyboardLoading": "Leyendo datos del teclado…",
+  "data.keyboardEmpty": "Todavía no hay actividad del teclado en este rango",
+  "data.keyboardLayoutMismatch": "Ninguna de las teclas registradas pertenece a esta distribución. Prueba con otra.",
+  "data.keyboardTopKeys": "Teclas más pulsadas",
+  "data.keyboardTopCombos": "Combinaciones más usadas",
+  "data.keyboardNoCombos": "No hay combinaciones de teclas en este rango",
+  "data.keyboardKeyTooltip": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "",
+      {
+        "$op": "arg",
+        "name": "label"
+      },
+      " · ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " pulsaciones · ",
+      {
+        "$op": "arg",
+        "name": "share"
+      },
+      " del total"
+    ]
+  }
+  },
+  "accessibility.data.keyboardHeatmap": {
+    "$type": "message",
+    "body": {
+    "$op": "concat",
+    "parts": [
+      "Mapa de calor del teclado: ",
+      {
+        "$op": "arg",
+        "name": "count"
+      },
+      " pulsaciones"
+    ]
+  }
+  },
+  "data.keyboardLayouts.60%": "60%",
+  "data.keyboardLayouts.75%": "75%",
+  "data.keyboardLayouts.TKL": "TKL",
+  "data.keyboardLayouts.Full": "Tamaño completo",
+  "data.keyboardLayouts.Laptop": "Portátil",
+  "accessibility.data.keyboardLayoutFilter": "Elegir distribución del teclado",
+  "data.keyboardRegions.letters": "Letras",
+  "data.keyboardRegions.digits": "Dígitos",
+  "data.keyboardRegions.symbols": "Símbolos",
+  "data.keyboardRegions.modifiers": "Modificadores",
+  "data.keyboardRegions.editing": "Teclas de edición",
+  "data.keyboardRegions.function": "Teclas de función",
+  "data.keyboardRegions.navigation": "Navegación",
+  "data.keyboardRegions.numpad": "Teclado numérico",
   "data.heatmapWeekly": "Semanal",
   "data.interactionHint": "Doble clic para detalles · Ctrl para seleccionar",
   "data.monthlyAverage": "Prom. mensual",

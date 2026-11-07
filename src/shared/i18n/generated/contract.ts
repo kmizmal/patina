@@ -71,6 +71,8 @@ export interface UiText {
       "earlierRange": string;
       "heatmapCell": (dateKey: string, summary: string) => string;
       "heatmapRange": string;
+      "keyboardHeatmap": (count: string) => string;
+      "keyboardLayoutFilter": string;
       "longerAppTrendRange": string;
       "longerTrendRange": string;
       "newerRange": string;
@@ -260,6 +262,34 @@ export interface UiText {
     "heatmapError": string;
     "heatmapWeekly": string;
     "interactionHint": string;
+    "keyboardDisabled": string;
+    "keyboardEmpty": string;
+    "keyboardError": string;
+    "keyboardHeatmap": string;
+    "keyboardKeyTooltip": (label: string, count: string, share: string) => string;
+    "keyboardLayoutMismatch": string;
+    "keyboardLayouts": {
+      "60%": string;
+      "75%": string;
+      "Full": string;
+      "Laptop": string;
+      "TKL": string;
+    };
+    "keyboardLoading": string;
+    "keyboardNoCombos": string;
+    "keyboardRegions": {
+      "digits": string;
+      "editing": string;
+      "function": string;
+      "letters": string;
+      "modifiers": string;
+      "navigation": string;
+      "numpad": string;
+      "symbols": string;
+    };
+    "keyboardRetry": string;
+    "keyboardTopCombos": string;
+    "keyboardTopKeys": string;
     "monthlyAverage": string;
     "notStarted": string;
     "pastSevenDays": string;

@@ -20,7 +20,7 @@
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Mutex, OnceLock};
 use std::thread::{self, JoinHandle};
 use std::time::Duration;
@@ -28,9 +28,8 @@ use windows::core::PCWSTR;
 use windows::Win32::Foundation::{HWND, LPARAM, LRESULT, WPARAM};
 use windows::Win32::System::LibraryLoader::GetModuleHandleW;
 use windows::Win32::UI::Input::{
-    GetRawInputData, RegisterRawInputDevices, HRAWINPUT, RAWINPUT, RAWINPUTDEVICE,
-    RAWINPUTDEVICE_FLAGS, RAWINPUTHEADER, RIDEV_INPUTSINK, RIDEV_REMOVE, RID_INPUT,
-    RIM_TYPEKEYBOARD,
+    GetRawInputData, RegisterRawInputDevices, HRAWINPUT, RAWINPUT, RAWINPUTDEVICE, RAWINPUTHEADER,
+    RIDEV_INPUTSINK, RIDEV_REMOVE, RID_INPUT, RIM_TYPEKEYBOARD,
 };
 use windows::Win32::UI::WindowsAndMessaging::{
     CreateWindowExW, DefWindowProcW, DestroyWindow, DispatchMessageW, GetMessageW, PostMessageW,
@@ -87,7 +86,10 @@ pub enum CaptureStart {
 
 struct CaptureState {
     thread: Option<JoinHandle<()>>,
-    hwnd: Option<HWND>,
+    /// The window address, not an `HWND`: `HWND` wraps a raw pointer and is not
+    /// `Send`, which would make the whole static state non-`Send`. The handle is
+    /// rebuilt where it is actually used.
+    hwnd_address: Option<isize>,
 }
 
 static STATE: OnceLock<Mutex<CaptureState>> = OnceLock::new();
@@ -98,7 +100,7 @@ fn state() -> &'static Mutex<CaptureState> {
     STATE.get_or_init(|| {
         Mutex::new(CaptureState {
             thread: None,
-            hwnd: None,
+            hwnd_address: None,
         })
     })
 }
@@ -215,13 +217,13 @@ pub fn start() -> CaptureStart {
     // timeout here means window creation failed; the thread exits on its own.
     match rx.recv_timeout(Duration::from_secs(5)) {
         Ok(Some(address)) => {
-            guard.hwnd = Some(HWND(address as *mut core::ffi::c_void));
+            guard.hwnd_address = Some(address);
             guard.thread = Some(handle);
             CaptureStart::Started
         }
         _ => {
             guard.thread = Some(handle);
-            guard.hwnd = None;
+            guard.hwnd_address = None;
             CaptureStart::Unavailable
         }
     }
@@ -236,13 +238,14 @@ pub fn stop() {
             Ok(guard) => guard,
             Err(_) => return,
         };
-        (guard.hwnd.take(), guard.thread.take())
+        (guard.hwnd_address.take(), guard.thread.take())
     };
 
-    if let Some(hwnd) = hwnd {
+    if let Some(address) = hwnd {
         unsafe {
             // Ask the owning thread to tear down; WM_CLOSE is handled by the
             // window procedure, which unregisters raw input and posts WM_QUIT.
+            let hwnd = HWND(address as *mut core::ffi::c_void);
             let _ = PostMessageW(Some(hwnd), WM_CLOSE, WPARAM(0), LPARAM(0));
         }
     }

@@ -29,7 +29,8 @@ const NON_DATA_PRIMARY_LAZY_ROUTES_GZIP_BUDGET_KI_B = 86.5;
 // Icon extraction and theme adaptation: docs/archive/2026-11-05-activity-color-bundle-decision.md.
 // Per-task focus history: docs/archive/2026-11-06-focus-history-bundle-decision.md.
 // Keyboard heatmap: docs/archive/2026-11-07-keyboard-heatmap-bundle-decision.md.
-const TOTAL_JS_AND_CSS_GZIP_BUDGET_KI_B = 426.2;
+// Keyboard record clearing: docs/archive/2026-11-08-keyboard-clear-bundle-decision.md.
+const TOTAL_JS_AND_CSS_GZIP_BUDGET_KI_B = 426.9;
 
 const INITIAL_CHUNK_BUDGETS = [
   { label: "index", pattern: /^index-.*\.js$/, gzipKiB: 65 },
@@ -40,7 +41,9 @@ const INITIAL_CHUNK_BUDGETS = [
   { label: "runtime type guards", pattern: /^runtimeTypeGuards-.*\.js$/, gzipKiB: 0.2 },
   // Production locale metadata lives here; translated text stays in its own
   // locale chunk. Initial and total graph budgets remain unchanged.
-  { label: "localization", pattern: /^runtime-.*\.js$/, gzipKiB: 7.8 },
+  // Keyboard record clearing adds one hint and two result messages to every
+  // locale: docs/archive/2026-11-08-keyboard-clear-bundle-decision.md.
+  { label: "localization", pattern: /^runtime-.*\.js$/, gzipKiB: 7.85 },
   { label: "classification", pattern: /^appClassification-.*\.js$/, gzipKiB: 6 },
   { label: "object color", pattern: /^objectColor-.*\.js$/, gzipKiB: 0.316 },
 ] as const;
@@ -126,6 +129,10 @@ const LAZY_SHARED_UI_CHUNK_BUDGETS = [
   { label: "scheduled task presentation", pattern: /^scheduledTaskPresentation-.*\.js$/, gzipKiB: 0.48 },
   { label: "requested app icons", pattern: /^useRequestedAppIcons-.*\.js$/, gzipKiB: 0.55 },
   { label: "settings runtime adapter", pattern: /^settingsRuntimeAdapterService-.*\.js$/, gzipKiB: 3 },
+  // Two lazy owners read keyboard totals: the heatmap in Data and the delete
+  // action in Settings. The shared typed gateway is therefore its own owner
+  // instead of an unowned support fragment.
+  { label: "keyboard activity gateway", pattern: /^keyboardActivityGateway-.*\.js$/, gzipKiB: 0.2 },
   { label: "duration formatting", pattern: /^durationFormatting-.*\.js$/, gzipKiB: 0.2 },
   { label: "icon representative", pattern: /^iconRepresentative-.*\.js$/, gzipKiB: 3 },
 ] as const;

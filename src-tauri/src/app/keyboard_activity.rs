@@ -44,14 +44,10 @@ static WAKE: std::sync::OnceLock<tokio::sync::Notify> = std::sync::OnceLock::new
 /// Safe to call more than once: only the first call spawns the loop.
 pub(crate) fn spawn_supervisor<R: Runtime + 'static>(app: AppHandle<R>) {
     if LOOP_SPAWNED.swap(true, Ordering::SeqCst) {
-        eprintln!("[keyboard] supervisor already spawned");
         return;
     }
-    eprintln!("[keyboard] supervisor spawning");
     tauri::async_runtime::spawn(async move {
-        eprintln!("[keyboard] supervisor running");
         run_supervisor(app).await;
-        eprintln!("[keyboard] supervisor exited");
     });
 }
 
@@ -107,10 +103,7 @@ fn apply_capture_state(enabled: bool, capturing: bool) -> bool {
                 true
             }
             // Already running from an earlier start that lost track of state.
-            keyboard_capture::CaptureStart::AlreadyRunning => {
-                eprintln!("[keyboard] capture was already running");
-                true
-            }
+            keyboard_capture::CaptureStart::AlreadyRunning => true,
             // Raw input registration failed. The feature is on but nothing is
             // being recorded, so this must be loud rather than a silent gap.
             keyboard_capture::CaptureStart::Unavailable => {

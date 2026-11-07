@@ -370,7 +370,6 @@ unsafe extern "system" fn capture_window_proc(
 ) -> LRESULT {
     match msg {
         WM_INPUT => {
-            eprintln!("[keyboard] wm_input received");
             handle_raw_input(HRAWINPUT(lparam.0 as _));
             // DefWindowProcW performs the required cleanup for WM_INPUT.
             DefWindowProcW(hwnd, msg, wparam, lparam)
@@ -385,13 +384,7 @@ unsafe extern "system" fn capture_window_proc(
             unsafe { PostQuitMessage(0) };
             LRESULT(0)
         }
-        _ => {
-            // Temporary: prove the window procedure is receiving anything at all.
-            if msg != 0x0084 {
-                eprintln!("[keyboard] wndproc msg=0x{msg:04X}");
-            }
-            unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) }
-        }
+        _ => unsafe { DefWindowProcW(hwnd, msg, wparam, lparam) },
     }
 }
 
@@ -431,7 +424,6 @@ fn handle_raw_input(raw_input_handle: HRAWINPUT) {
 
     if let Ok(mut buffer) = buffer().lock() {
         let now = crate::platform::clock::unix_timestamp_millis_i64();
-        eprintln!("[keyboard] record {key_name} vk={}", keyboard.VKey);
         buffer.record(now, &key_name, i64::from(keyboard.VKey), combo.as_deref());
     }
     track_modifier(keyboard.VKey);

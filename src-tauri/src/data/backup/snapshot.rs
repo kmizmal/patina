@@ -318,6 +318,8 @@ async fn count_table(pool: &Pool<Sqlite>, table: &str) -> Result<usize, String> 
         "scheduled_backup_runs" => "SELECT COUNT(*) FROM scheduled_backup_runs",
         "scheduled_export_config" => "SELECT COUNT(*) FROM scheduled_export_config",
         "scheduled_export_runs" => "SELECT COUNT(*) FROM scheduled_export_runs",
+        "keyboard_key_minutes" => "SELECT COUNT(*) FROM keyboard_key_minutes",
+        "keyboard_combo_minutes" => "SELECT COUNT(*) FROM keyboard_combo_minutes",
         _ => return Err(format!("unsupported backup count table `{table}`")),
     };
     let value: i64 = sqlx::query_scalar(query)

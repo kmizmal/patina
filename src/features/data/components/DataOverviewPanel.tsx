@@ -52,52 +52,25 @@ interface DataOverviewPanelProps {
   keyboardActivityEnabled: boolean;
 }
 
-export default function DataOverviewPanel({
+function DataOverviewPanel({
   trend,
   heatmap,
   keyboardActivityEnabled,
 }: DataOverviewPanelProps) {
   return (
     <div className="qp-panel p-5 data-overview">
-      <DataTrendPanel
-        allTimeEndDateKey={trend.allTimeEndDateKey}
-        allTimeStartDateKey={trend.allTimeStartDateKey}
-        selection={trend.selection}
-        readState={trend.readState}
-        chartRef={trend.chartRef}
-        initialDimension={trend.initialDimension}
-        canOpenHistory={trend.canOpenHistory}
-        onSelectionChange={trend.onSelectionChange}
-        onMouseDownCapture={trend.onMouseDownCapture}
-        onDoubleClickCapture={trend.onDoubleClickCapture}
-        onMouseMove={trend.onMouseMove}
-        onMouseLeave={trend.onMouseLeave}
-      />
-
-      <DataHeatmapPanel
-        selectedHeatmapView={heatmap.selectedHeatmapView}
-        selectedHeatmapViewKey={heatmap.selectedHeatmapViewKey}
-        rows={heatmap.rows}
-        granularity={heatmap.granularity}
-        granularityOptions={heatmap.granularityOptions}
-        canSelectOlderHeatmapView={heatmap.canSelectOlderHeatmapView}
-        canSelectNewerHeatmapView={heatmap.canSelectNewerHeatmapView}
-        onGranularityChange={heatmap.onGranularityChange}
-        onSelectAdjacentHeatmapView={heatmap.onSelectAdjacentHeatmapView}
-        onOpenHistoryDate={heatmap.onOpenHistoryDate}
-        loading={heatmap.loading}
-        errorMessage={heatmap.errorMessage}
-        refreshFailed={heatmap.refreshFailed}
-        onRetry={heatmap.onRetry}
-      />
-
-      {keyboardActivityEnabled
-        ? (
-          <Suspense fallback={null}>
-            <KeyboardHeatmapSection selection={trend.selection} />
-          </Suspense>
-        )
-        : null}
+      {/* The prop groups are spread rather than re-listed: the group keys already
+          match the panel prop names, and listing them again made this wrapper as
+          expensive as the children it forwards. */}
+      <DataTrendPanel {...trend} />
+      <DataHeatmapPanel {...heatmap} />
+      {keyboardActivityEnabled ? (
+        <Suspense fallback={null}>
+          <KeyboardHeatmapSection selection={trend.selection} />
+        </Suspense>
+      ) : null}
     </div>
   );
 }
+
+export default DataOverviewPanel;

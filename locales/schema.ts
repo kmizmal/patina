@@ -1212,27 +1212,17 @@ export const MESSAGE_SCHEMA = {
     "params": [],
     "surface": "frontend"
   },
-  "data.keyboardError": {
-    "kind": "string",
-    "params": [],
-    "surface": "frontend"
-  },
-  "data.keyboardRetry": {
-    "kind": "string",
-    "params": [],
-    "surface": "frontend"
-  },
-  "data.keyboardLoading": {
-    "kind": "string",
-    "params": [],
-    "surface": "frontend"
-  },
   "data.keyboardEmpty": {
     "kind": "string",
     "params": [],
     "surface": "frontend"
   },
   "data.keyboardLayoutMismatch": {
+    "kind": "string",
+    "params": [],
+    "surface": "frontend"
+  },
+  "data.keyboardDistribution": {
     "kind": "string",
     "params": [],
     "surface": "frontend"

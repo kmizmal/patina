@@ -264,8 +264,8 @@ export interface UiText {
     "heatmapWeekly": string;
     "interactionHint": string;
     "keyboardDisabled": string;
+    "keyboardDistribution": string;
     "keyboardEmpty": string;
-    "keyboardError": string;
     "keyboardHeatmap": string;
     "keyboardKeyTooltip": (label: string, count: string, share: string) => string;
     "keyboardLayoutMismatch": string;
@@ -276,7 +276,6 @@ export interface UiText {
       "Laptop": string;
       "TKL": string;
     };
-    "keyboardLoading": string;
     "keyboardNoCombos": string;
     "keyboardRegions": {
       "digits": string;
@@ -288,7 +287,6 @@ export interface UiText {
       "numpad": string;
       "symbols": string;
     };
-    "keyboardRetry": string;
     "keyboardTopCombos": string;
     "keyboardTopKeys": string;
     "monthlyAverage": string;

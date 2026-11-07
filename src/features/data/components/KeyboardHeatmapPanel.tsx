@@ -94,14 +94,14 @@ function KeyboardHeatmapPanel({
         <p className="data-keyboard-heatmap-empty">{UI_TEXT.data.keyboardDisabled}</p>
       ) : error ? (
         <div className="data-keyboard-heatmap-empty">
-          <span>{UI_TEXT.data.keyboardError}</span>
+          <span>{UI_TEXT.common.readFailed}</span>
           <button type="button" className="qp-link-button" onClick={onRetry}>
-            {UI_TEXT.data.keyboardRetry}
+            {UI_TEXT.common.retry}
           </button>
         </div>
       ) : viewModel === null || viewModel.totalPresses <= 0 ? (
         <p className="data-keyboard-heatmap-empty">
-          {loading ? UI_TEXT.data.keyboardLoading : UI_TEXT.data.keyboardEmpty}
+          {loading ? UI_TEXT.common.loading : UI_TEXT.data.keyboardEmpty}
         </p>
       ) : (
         <>
@@ -212,6 +212,28 @@ function KeyboardHeatmapPanel({
                 </ul>
               )}
             </div>
+          </div>
+
+          <div>
+            <h4 className="data-keyboard-heatmap-subheading">
+              {UI_TEXT.data.keyboardDistribution}
+            </h4>
+            <ul className="data-keyboard-heatmap-list">
+              {viewModel.regions.map((region) => (
+                <li key={region.id} className="data-keyboard-heatmap-list-row">
+                  <span>{UI_TEXT.data.keyboardRegions[region.id]}</span>
+                  <span className="data-keyboard-heatmap-list-bar">
+                    <span
+                      className="data-keyboard-heatmap-list-bar-fill"
+                      style={{ width: `${Math.max(2, region.share * 100)}%` }}
+                    />
+                  </span>
+                  <span className="data-keyboard-heatmap-list-value">
+                    {formatShare(region.share, locale)}
+                  </span>
+                </li>
+              ))}
+            </ul>
           </div>
         </>
       )}

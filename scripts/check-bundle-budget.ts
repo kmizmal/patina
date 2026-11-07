@@ -94,6 +94,10 @@ const LAZY_SECONDARY_CHUNK_BUDGETS = [
   { label: "Data first-screen prewarm", pattern: /^dataFirstScreenPrewarm-.*\.js$/, gzipKiB: 6 },
   { label: "Data trend snapshot", pattern: /^dataTrendSnapshot-.*\.js$/, gzipKiB: 2 },
   { label: "Data bootstrap snapshot", pattern: /^dataBootstrapSnapshot-.*\.js$/, gzipKiB: 1.8 },
+  // The keyboard heatmap is a second lazy layer under Data: it only renders when
+  // keyboard recording is on, and its geometry is pure table data. Owning it
+  // here keeps it out of the unowned-fragment aggregate it would otherwise join.
+  { label: "Keyboard heatmap", pattern: /^KeyboardHeatmapSection-.*\.js$/, gzipKiB: 5 },
   // The shared destination-detail entry preloads one cross-feature dialog while
   // retaining a separate chunk so ordinary Dashboard, History, and Data views
   // do not pay for single-object analysis in their first-render graphs.

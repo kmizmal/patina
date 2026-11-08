@@ -375,6 +375,12 @@
           "markdownDescription": "Enables the cmd_clear_history_bootstrap_snapshot_payload command without any pre-configured scope."
         },
         {
+          "description": "Enables the cmd_clear_keyboard_activity command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-cmd-clear-keyboard-activity",
+          "markdownDescription": "Enables the cmd_clear_keyboard_activity command without any pre-configured scope."
+        },
+        {
           "description": "Enables the cmd_clear_remote_backup_settings command without any pre-configured scope.",
           "type": "string",
           "const": "allow-cmd-clear-remote-backup-settings",
@@ -541,6 +547,12 @@
           "type": "string",
           "const": "allow-cmd-get-history-range-rows",
           "markdownDescription": "Enables the cmd_get_history_range_rows command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the cmd_get_keyboard_activity_snapshot command without any pre-configured scope.",
+          "type": "string",
+          "const": "allow-cmd-get-keyboard-activity-snapshot",
+          "markdownDescription": "Enables the cmd_get_keyboard_activity_snapshot command without any pre-configured scope."
         },
         {
           "description": "Enables the cmd_get_legacy_classification_apps command without any pre-configured scope.",
@@ -1077,6 +1089,12 @@
           "markdownDescription": "Denies the cmd_clear_history_bootstrap_snapshot_payload command without any pre-configured scope."
         },
         {
+          "description": "Denies the cmd_clear_keyboard_activity command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-cmd-clear-keyboard-activity",
+          "markdownDescription": "Denies the cmd_clear_keyboard_activity command without any pre-configured scope."
+        },
+        {
           "description": "Denies the cmd_clear_remote_backup_settings command without any pre-configured scope.",
           "type": "string",
           "const": "deny-cmd-clear-remote-backup-settings",
@@ -1243,6 +1261,12 @@
           "type": "string",
           "const": "deny-cmd-get-history-range-rows",
           "markdownDescription": "Denies the cmd_get_history_range_rows command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the cmd_get_keyboard_activity_snapshot command without any pre-configured scope.",
+          "type": "string",
+          "const": "deny-cmd-get-keyboard-activity-snapshot",
+          "markdownDescription": "Denies the cmd_get_keyboard_activity_snapshot command without any pre-configured scope."
         },
         {
           "description": "Denies the cmd_get_legacy_classification_apps command without any pre-configured scope.",
